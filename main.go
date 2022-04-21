@@ -1,17 +1,34 @@
 package main
+
 import (
+	"database/sql"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
- "github.com/gin-gonic/gin"
+	"time"
 )
+
+type User struct {
+	ID           uint
+	Name         string
+	Email        *string
+	Age          uint8
+	Birthday     *time.Time
+	MemberNumber sql.NullString
+	ActivatedAt  sql.NullTime
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
 func main() {
 
 	dsn := "host=localhost user=postgres password=postgres dbname=next_db port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
+	db.AutoMigrate(&User{})
 
 	fmt.Println("Hello World!")
 	r := gin.Default()
