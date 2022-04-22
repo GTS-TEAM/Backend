@@ -1,0 +1,29 @@
+image: ubuntu:latest
+stages:
+  - deploy
+  - deploy-production
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+deploy:
+  stage: deploy
+  environment:
+    name: development
+  script:
+    - ssh root@$SSH_HOST_IP "cd next;git checkout dev;git pull; git reset --hard origin/dev;go mod tidy; go run main.go"
+  only:
+    - dev
+
+deploy-production:
+  stage: deploy
+  environment:
+    name: production
+  script:
+    - ssh root@$SSH_HOST_IP "cd next;git checkout dev;git pull; git reset --hard origin/dev;go mod tidy; go run main.go"
+  only:
+    - main
+  when: manual

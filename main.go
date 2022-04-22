@@ -1,41 +1,47 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"time"
+	"github.com/joho/godotenv"
+	"log"
+	"next/controllers"
+	"next/models"
+	"os"
 )
-
-type User struct {
-	ID           uint
-	Name         string
-	Email        *string
-	Age          uint8
-	Birthday     *time.Time
-	MemberNumber sql.NullString
-	ActivatedAt  sql.NullTime
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
-}
 
 func main() {
 
-	dsn := "host=localhost user=postgres password=postgres dbname=next_db port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	err := godotenv.Load(".env")
 	if err != nil {
-		panic(err)
+		log.Fatal("error: failed to load the env file")
 	}
-	db.AutoMigrate(&User{})
 
-	fmt.Println("Hello World!")
+	if os.Getenv("ENV") == "PRODUCTION" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
+
+	models.Init()
+
+	api := r.Group("/api")
+	{
+		api.GET("/", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "Hello World",
+			})
 		})
-	})
-	r.Run() // listen and serve on
+		authGroup := api.Group("/auth")
+		{
+			auth := new(controllers.AuthController)
+			authGroup.POST("/login", auth.Login)
+			authGroup.POST("/register", auth.Register)
+		}
+	}
+
+	r.Run("127.0.0.1:8080") // listen and serve on
 }
