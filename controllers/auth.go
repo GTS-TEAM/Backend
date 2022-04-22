@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"next/dtos"
@@ -31,7 +30,6 @@ func (auth *AuthController) Login(c *gin.Context) {
 }
 
 func (auth *AuthController) Register(c *gin.Context) {
-	fmt.Printf("Register")
 	RegisterForm := dtos.RegisterForm{}
 
 	if validationErr := c.ShouldBindJSON(&RegisterForm); validationErr != nil {
