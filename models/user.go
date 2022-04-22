@@ -65,3 +65,18 @@ func (u *User) Register(dto dtos.RegisterForm) (err error) {
 	}
 	return nil
 }
+
+func (u *User) GetUserByID(id uint) (user User, err error) {
+	if err := db.First(&user, id).Error; err != nil {
+		return user, err
+	}
+	return user, nil
+}
+
+func (u *User) GetName(userId string) (user User, err error) {
+	if err = db.First(&user, "id = ?", userId).Error; err != nil {
+		return user, err
+	}
+	fmt.Println("user", user)
+	return user, nil
+}

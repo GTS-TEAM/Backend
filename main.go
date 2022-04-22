@@ -10,6 +10,14 @@ import (
 	"os"
 )
 
+func TokenAuthMiddleware() gin.HandlerFunc {
+	t := &models.Token{}
+	return func(c *gin.Context) {
+		t.TokenValid(c)
+		c.Next()
+	}
+}
+
 func main() {
 
 	err := godotenv.Load(".env")
@@ -41,6 +49,16 @@ func main() {
 			authGroup.POST("/login", auth.Login)
 			authGroup.POST("/register", auth.Register)
 			authGroup.POST("/refresh-token", auth.RefreshToken)
+		}
+		userGroup := api.Group("/user")
+		{
+			user := new(controllers.UserController)
+			userGroup.GET("/", TokenAuthMiddleware(), user.Get)
+			//userGroup.GET("/", user.GetAll)
+			//userGroup.GET("/:id", user.Get)
+			//userGroup.POST("/", user.Create)
+			//userGroup.PUT("/:id", user.Update)
+			//userGroup.DELETE("/:id", user.Delete)
 		}
 	}
 

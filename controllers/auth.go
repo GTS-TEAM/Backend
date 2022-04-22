@@ -57,7 +57,7 @@ func (auth *AuthController) RefreshToken(c *gin.Context) {
 
 	token := models.Token{}
 
-	res, err := token.RefreshToken(RefreshTokenForm.RefreshToken)
+	res, err := token.ValidateTokenRefreshToken(RefreshTokenForm.RefreshToken)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, dtos.Response{Message: err.Error(), Data: nil})
 		return

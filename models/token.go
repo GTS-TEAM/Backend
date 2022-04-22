@@ -4,7 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
+	"net/http"
+	"strings"
 	"time"
 )
 
@@ -60,6 +63,38 @@ func (t *Token) GenerateToken(UserID uuid.UUID, tokenType string) (string, error
 	return tk, nil
 }
 
+func (t *Token) TokenValid(c *gin.Context) {
+
+	token := t.ExtractToken(c.Request)
+
+	userId, err := t.VerifyToken(token)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Invalid token",
+		})
+		return
+	}
+
+	if err != nil {
+		//Token does not exists in Redis (User logged out or expired)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Please login first"})
+		return
+	}
+
+	//To be called from GetUserID()
+	c.Set("userID", userId)
+}
+
+func (t *Token) ExtractToken(r *http.Request) string {
+	bearToken := r.Header.Get("Authorization")
+	//normally Authorization the_token_xxx
+	strArr := strings.Split(bearToken, " ")
+	if len(strArr) == 2 {
+		return strArr[1]
+	}
+	return ""
+}
+
 func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
 	accessToken, err := t.GenerateToken(UserID, AccessTokenType)
 	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType)
@@ -81,22 +116,16 @@ func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
 }
 
 func (t *Token) RefreshToken(token string) (*AuthToken, error) {
-	fmt.Println("RefreshToken: ", token)
-	userId, err := t.VerifyToken(token)
+	userId, err := t.ValidateTokenRefreshToken(token)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
 
-	fromString, err := uuid.FromString(userId)
-	if err != nil {
-		return nil, err
-	}
-
-	return t.GenerateAuthToken(fromString)
+	return t.GenerateAuthToken(userId)
 }
 
-func (t *Token) VerifyToken(token string) (string, error) {
+func (t *Token) VerifyToken(token string) (uuid.UUID, error) {
 	jwtPayload, err := jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
 		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method %v ", t_.Header["alg"])
@@ -105,15 +134,22 @@ func (t *Token) VerifyToken(token string) (string, error) {
 	})
 
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	userId := jwtPayload.Claims.(jwt.MapClaims)["user_id"].(string)
-	fmt.Println("User Id: ", userId)
+	return uuid.FromString(userId)
+}
 
-	if err = db.First(&Token{}, "token = ? AND user_id = ?", token, userId).Error; err != nil {
+func (t *Token) ValidateTokenRefreshToken(refreshToken string) (uuid.UUID, error) {
+	userId, err := t.VerifyToken(refreshToken)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	if err = db.First(&Token{}, "token = ? AND user_id = ?", refreshToken, userId).Error; err != nil {
 		fmt.Println("VerifyToken Err: ", err)
-		return "", errors.New("Invalid Token")
+		return uuid.Nil, errors.New("Invalid Token")
 	}
 
 	return userId, nil
