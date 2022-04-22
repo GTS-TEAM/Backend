@@ -36,8 +36,7 @@ const (
 	RefreshTokenType = "refresh"
 )
 
-func (t *Token) GenerateToken(UserID uuid.UUID, tokenType string) (string, error) {
-
+func (t *Token) GenerateToken(UserID uuid.UUID, tokenType string, exp int64) (string, error) {
 	var user User
 	if err := db.First(&user, "id = ?", UserID.String()).Error; err != nil {
 		return "", err
@@ -49,7 +48,7 @@ func (t *Token) GenerateToken(UserID uuid.UUID, tokenType string) (string, error
 		user.Role,
 		tokenType,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
+			ExpiresAt: exp,
 			Issuer:    "go-jwt",
 			IssuedAt:  time.Now().Unix(),
 		},
@@ -96,8 +95,8 @@ func (t *Token) ExtractToken(r *http.Request) string {
 }
 
 func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
-	accessToken, err := t.GenerateToken(UserID, AccessTokenType)
-	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType)
+	accessToken, err := t.GenerateToken(UserID, AccessTokenType, time.Now().Add(time.Minute*2).Unix())
+	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType, time.Now().Add(time.Minute*30).Unix())
 
 	db.Create(&Token{
 		Token:  refreshToken,
@@ -113,16 +112,6 @@ func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
-}
-
-func (t *Token) RefreshToken(token string) (*AuthToken, error) {
-	userId, err := t.ValidateTokenRefreshToken(token)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return t.GenerateAuthToken(userId)
 }
 
 func (t *Token) VerifyToken(token string) (uuid.UUID, error) {
@@ -141,18 +130,18 @@ func (t *Token) VerifyToken(token string) (uuid.UUID, error) {
 	return uuid.FromString(userId)
 }
 
-func (t *Token) ValidateTokenRefreshToken(refreshToken string) (uuid.UUID, error) {
+func (t *Token) ValidateTokenRefreshToken(refreshToken string) (*AuthToken, error) {
 	userId, err := t.VerifyToken(refreshToken)
 	if err != nil {
-		return uuid.Nil, err
+		return nil, err
 	}
 
 	if err = db.First(&Token{}, "token = ? AND user_id = ?", refreshToken, userId).Error; err != nil {
 		fmt.Println("VerifyToken Err: ", err)
-		return uuid.Nil, errors.New("Invalid Token")
+		return nil, errors.New("Invalid Token")
 	}
 
-	return userId, nil
+	return t.GenerateAuthToken(userId)
 }
 
 func getSecretKey() []byte {
