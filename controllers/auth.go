@@ -47,3 +47,21 @@ func (auth *AuthController) Register(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtos.Response{Message: "Register success", Data: nil})
 }
+
+func (auth *AuthController) RefreshToken(c *gin.Context) {
+	RefreshTokenForm := dtos.RefreshTokenForm{}
+	if validationErr := c.ShouldBindJSON(&RefreshTokenForm); validationErr != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
+		return
+	}
+
+	token := models.Token{}
+
+	res, err := token.RefreshToken(RefreshTokenForm.RefreshToken)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, dtos.Response{Message: err.Error(), Data: nil})
+		return
+	}
+
+	c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: res})
+}

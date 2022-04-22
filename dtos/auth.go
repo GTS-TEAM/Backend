@@ -13,3 +13,7 @@ type RegisterForm struct {
 	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
 	Name     string `form:"name" json:"name" binding:"required,min=3,max=50"`
 }
+
+type RefreshTokenForm struct {
+	RefreshToken string `form:"refresh_token" json:"refresh_token" binding:"required"`
+}

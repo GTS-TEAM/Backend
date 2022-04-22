@@ -40,6 +40,7 @@ func main() {
 			auth := new(controllers.AuthController)
 			authGroup.POST("/login", auth.Login)
 			authGroup.POST("/register", auth.Register)
+			authGroup.POST("/refresh-token", auth.RefreshToken)
 		}
 	}
 

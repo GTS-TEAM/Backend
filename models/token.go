@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	uuid "github.com/satori/go.uuid"
 	"time"
@@ -19,9 +21,10 @@ type AuthToken struct {
 }
 
 type JwtCustomClaim struct {
-	UserID  uuid.UUID `json:"user_id"`
-	IsValid bool      `json:"is_valid"`
-	Role    string    `json:"role"`
+	UserID    uuid.UUID `json:"user_id"`
+	IsValid   bool      `json:"is_valid"`
+	Role      string    `json:"role"`
+	TokenType string    `json:"token_type"`
 	jwt.StandardClaims
 }
 
@@ -30,7 +33,7 @@ const (
 	RefreshTokenType = "refresh"
 )
 
-func (t *Token) GenerateToken(UserID uuid.UUID) (string, error) {
+func (t *Token) GenerateToken(UserID uuid.UUID, tokenType string) (string, error) {
 
 	var user User
 	if err := db.First(&user, "id = ?", UserID.String()).Error; err != nil {
@@ -41,6 +44,7 @@ func (t *Token) GenerateToken(UserID uuid.UUID) (string, error) {
 		UserID,
 		true,
 		user.Role,
+		tokenType,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
 			Issuer:    "go-jwt",
@@ -57,8 +61,8 @@ func (t *Token) GenerateToken(UserID uuid.UUID) (string, error) {
 }
 
 func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
-	accessToken, err := t.GenerateToken(UserID)
-	refreshToken, err := t.GenerateToken(UserID)
+	accessToken, err := t.GenerateToken(UserID, AccessTokenType)
+	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType)
 
 	db.Create(&Token{
 		Token:  refreshToken,
@@ -76,14 +80,44 @@ func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
 	}, nil
 }
 
-//func (t *Token) ValidateToken(token string) (*jwt.Token, error) {
-//	return jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
-//		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
-//			return nil, fmt.Errorf("Unexpected signing method %v ", t_.Header["alg"])
-//		}
-//		return getSecretKey(), nil
-//	})
-//}
+func (t *Token) RefreshToken(token string) (*AuthToken, error) {
+	fmt.Println("RefreshToken: ", token)
+	userId, err := t.VerifyToken(token)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	fromString, err := uuid.FromString(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return t.GenerateAuthToken(fromString)
+}
+
+func (t *Token) VerifyToken(token string) (string, error) {
+	jwtPayload, err := jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
+		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method %v ", t_.Header["alg"])
+		}
+		return getSecretKey(), nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	userId := jwtPayload.Claims.(jwt.MapClaims)["user_id"].(string)
+	fmt.Println("User Id: ", userId)
+
+	if err = db.First(&Token{}, "token = ? AND user_id = ?", token, userId).Error; err != nil {
+		fmt.Println("VerifyToken Err: ", err)
+		return "", errors.New("Invalid Token")
+	}
+
+	return userId, nil
+}
 
 func getSecretKey() []byte {
 	return []byte("secret")
