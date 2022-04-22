@@ -93,5 +93,5 @@ func main() {
 		}
 	}
 
-	r.Run(":8080") // listen and serve on
+	r.Run(":8080")
 }
