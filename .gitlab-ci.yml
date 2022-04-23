@@ -14,7 +14,7 @@ deploy:
   environment:
     name: development
   script:
-    - ssh root@3.0.102.186 "cd next;git checkout dev;git pull; git reset --hard origin/dev;docker-compose up --build -d"
+    - echo $SSH_HOST_IP,echo $SSH_PRIVATE_KEY;ssh ubuntu@3.0.102.186 "cd next;git checkout dev;git pull; git reset --hard origin/dev;docker-compose up --build -d"
   only:
     - dev
 
