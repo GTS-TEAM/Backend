@@ -14,16 +14,16 @@ deploy:
   environment:
     name: development
   script:
-    - echo $SSH_HOST_IP,echo $SSH_PRIVATE_KEY;ssh ubuntu@3.0.102.186 "cd next;git checkout dev;git pull; git reset --hard origin/dev;docker-compose up --build -d"
+    - ssh ubuntu@$SSH_HOST_IP "cd next;git checkout dev;git pull; git reset --hard origin/dev;docker-compose up --build -d"
   only:
     - dev
 
-#deploy-production:
-#  stage: deploy
-#  environment:
-#    name: production
-#  script:
-#    - ssh root@$SSH_HOST_IP "cd next;git checkout dev;git pull; git reset --hard origin/dev;docker-compose up --build -d"
-#  only:
-#    - main
-#  when: manual
+deploy-production:
+  stage: deploy
+  environment:
+    name: production
+  script:
+    - ssh ubuntu@$SSH_HOST_IP "cd next;git checkout dev;git pull; git reset --hard origin/dev;docker-compose up --build -d"
+  only:
+    - main
+  when: manual
