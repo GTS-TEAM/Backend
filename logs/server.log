@@ -4,11 +4,17 @@
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /api/                     --> main.main.func2 (8 handlers)
-[GIN-debug] POST   /api/auth/login           --> next/controllers.(*AuthController).Login-fm (8 handlers)
-[GIN-debug] POST   /api/auth/register        --> next/controllers.(*AuthController).Register-fm (8 handlers)
-[GIN-debug] POST   /api/auth/refresh-token   --> next/controllers.(*AuthController).RefreshToken-fm (8 handlers)
-[GIN-debug] GET    /api/user/                --> next/controllers.(*UserController).Get-fm (9 handlers)
+[GIN-debug] GET    /api/                     --> main.main.func5 (9 handlers)
+[GIN-debug] POST   /api/auth/login           --> next/controllers.(*AuthController).Login-fm (9 handlers)
+[GIN-debug] POST   /api/auth/register        --> next/controllers.(*AuthController).Register-fm (9 handlers)
+[GIN-debug] POST   /api/auth/refresh-token   --> next/controllers.(*AuthController).RefreshToken-fm (9 handlers)
+[GIN-debug] GET    /api/user/                --> next/controllers.(*UserController).Get-fm (10 handlers)
+[GIN-debug] GET    /socket.io/               --> github.com/gin-gonic/gin.WrapH.func1 (9 handlers)
+[GIN-debug] POST   /socket.io/*any           --> github.com/gin-gonic/gin.WrapH.func1 (9 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2022/04/24 - 01:36:50 | 304 |      1.0008ms |             ::1 | GET      "/"
+[GIN] 2022/04/24 - 01:36:50 | 200 |    1.3781444s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/24 - 01:36:50 | 200 |    1.3801149s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/24 - 01:36:50 | 304 |            0s |             ::1 | GET      "/main.js"

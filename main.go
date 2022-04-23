@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
+	socketio "github.com/googollee/go-socket.io"
+	static "github.com/gin-contrib/static"
 	"github.com/hpcloud/tail"
 	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
@@ -48,6 +50,7 @@ func RequestIDMiddleware() gin.HandlerFunc {
 	}
 }
 
+
 func main() {
 
 	err := godotenv.Load(".env")
@@ -62,18 +65,53 @@ func main() {
 	logFile, _ := os.Create("logs/server.log")
 	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
 
+
+
+	server := socketio.NewServer(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	server.OnEvent("/", "log", func(s socketio.Conn, msg string) string {
+		s.SetContext(msg)
+		fmt.Println("Receive Message : " + msg)
+		s.Emit("some", "data")
+		return "OK"
+	})
+	server.OnConnect("/", func(s socketio.Conn) error {
+		s.SetContext("")
+		s.Emit("some", "hello")
+		go func() {
+			t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
+			if err != nil {
+				log.Fatal(err)
+			}
+			for line := range t.Lines {
+				s.Emit("some", line.Text)
+			}
+		}()
+		return nil
+	})
+	server.OnDisconnect("/", func(s socketio.Conn, msg string) {
+		fmt.Println("Somebody just close the connection ")
+	})
+
 	go func() {
 		t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
 		if err != nil {
 			log.Fatal(err)
 		}
 		for line := range t.Lines {
-			fmt.Println("logs:", line.Text)
+			fmt.Println(line.Text)
 		}
 	}()
+	// Create Setup
+	// Combine Gin Gonic with Socket IO
+	// Method 1 using gin.WrapH or you changes this with server.ServeHTTP(Writer, Request)
+
 
 	r := gin.Default()
 
+	r.Use(static.Serve("/", static.LocalFile("./public", true)))
 	r.Use(CORSMiddleware())
 	r.Use(RequestIDMiddleware())
 	r.Use(gin.Logger())
@@ -107,6 +145,11 @@ func main() {
 			//userGroup.DELETE("/:id", user.Delete)
 		}
 	}
+	go server.Serve()
+	defer server.Close()
+	r.GET("/socket.io/", gin.WrapH(server))
+	r.POST("/socket.io/*any", gin.WrapH(server))
+	// Method 2 using server.ServerHTTP(Writer, Request) and also you can simply this by using gin.WrapH
 
 	r.Run(":8080")
 }
