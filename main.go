@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
+	"github.com/hpcloud/tail"
 	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
+	"io"
 	"log"
 	"next/controllers"
 	"next/models"
@@ -56,6 +58,19 @@ func main() {
 	if os.Getenv("ENV") == "PRODUCTION" {
 		gin.SetMode(gin.ReleaseMode)
 	}
+	os.Mkdir("logs", 0777)
+	logFile, _ := os.Create("logs/server.log")
+	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
+
+	go func() {
+		t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
+		if err != nil {
+			log.Fatal(err)
+		}
+		for line := range t.Lines {
+			fmt.Println("logs:", line.Text)
+		}
+	}()
 
 	r := gin.Default()
 
