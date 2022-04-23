@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gin-contrib/gzip"
+	static "github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
-	static "github.com/gin-contrib/static"
 	"github.com/hpcloud/tail"
 	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
@@ -50,7 +50,6 @@ func RequestIDMiddleware() gin.HandlerFunc {
 	}
 }
 
-
 func main() {
 
 	err := godotenv.Load(".env")
@@ -64,8 +63,6 @@ func main() {
 	os.Mkdir("logs", 0777)
 	logFile, _ := os.Create("logs/server.log")
 	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
-
-
 
 	server := socketio.NewServer(nil)
 	if err != nil {
@@ -95,19 +92,9 @@ func main() {
 		fmt.Println("Somebody just close the connection ")
 	})
 
-	go func() {
-		t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
-		if err != nil {
-			log.Fatal(err)
-		}
-		for line := range t.Lines {
-			fmt.Println(line.Text)
-		}
-	}()
 	// Create Setup
 	// Combine Gin Gonic with Socket IO
 	// Method 1 using gin.WrapH or you changes this with server.ServeHTTP(Writer, Request)
-
 
 	r := gin.Default()
 

@@ -1,7 +1,7 @@
 const messages = document.querySelector('#messages')
 const send = document.querySelector('#send')
 
-const socket = io("ws://next",{
+const socket = io("ws://localhost:8080",{
     path: "/socket.io",
     transports: ['websocket']
 })
