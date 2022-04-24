@@ -68,12 +68,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//server.OnEvent("/", "log", func(s socketio.Conn, msg string) string {
-	//	s.SetContext(msg)
-	//	fmt.Println("Receive Message : " + msg)
-	//	s.Emit("some", "data")
-	//	return "OK"
-	//})
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
 		go func() {
@@ -90,10 +84,6 @@ func main() {
 	server.OnDisconnect("/", func(s socketio.Conn, msg string) {
 		fmt.Println("Somebody just close the connection ")
 	})
-
-	// Create Setup
-	// Combine Gin Gonic with Socket IO
-	// Method 1 using gin.WrapH or you changes this with server.ServeHTTP(Writer, Request)
 
 	r := gin.Default()
 
