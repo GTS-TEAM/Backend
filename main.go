@@ -68,22 +68,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	server.OnEvent("/", "log", func(s socketio.Conn, msg string) string {
-		s.SetContext(msg)
-		fmt.Println("Receive Message : " + msg)
-		s.Emit("some", "data")
-		return "OK"
-	})
+	//server.OnEvent("/", "log", func(s socketio.Conn, msg string) string {
+	//	s.SetContext(msg)
+	//	fmt.Println("Receive Message : " + msg)
+	//	s.Emit("some", "data")
+	//	return "OK"
+	//})
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
-		s.Emit("some", "hello")
 		go func() {
 			t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
 			if err != nil {
 				log.Fatal(err)
 			}
 			for line := range t.Lines {
-				s.Emit("some", line.Text)
+				server.BroadcastToNamespace("/", "some", line.Text)
 			}
 		}()
 		return nil

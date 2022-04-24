@@ -11,22 +11,11 @@ socket.on('connect', () => {
 })
 
 socket.on('connect', () => {
-  console.log('connected')
-    socket.emit('log', 'Hello World from client')
     socket.on('some', (message) => {
         console.log(message)
         insertMessage({content:message})
     })
-    insertMessage({content:"connected"})
 })
-
-
-
-send.onclick = () => {
-    console.log("Sending")
-    socket.emit("log", "Hello from client")
-};
-
 
 // ws.onmessage = function (msg) {
 //     console.log(msg)
