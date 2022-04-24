@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"next/dtos"
 	"next/models"
@@ -26,8 +27,9 @@ func (p *ProductController) GetAll(c *gin.Context)  {
 
 	product := models.Product{}
 	c.ShouldBindJSON(&product)
-
-	products := product.GetAll(product)
+	category := c.Param("id")
+	fmt.Println("category", category)
+	products := product.GetAll(category)
 
 	c.JSON(200, dtos.Response{
 		Message: "Success",

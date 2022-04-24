@@ -124,11 +124,20 @@ func main() {
 		{
 			product := new(controllers.ProductController)
 			//productGroup.GET("/", TokenAuthMiddleware(), product.Gets)
-			productGroup.GET("/", product.GetAll)
+			productGroup.GET("/:id", product.GetAll)
 			//productGroup.GET("/:id", product.Gets)
 			productGroup.POST("/", product.Create)
 			//productGroup.PUT("/:id", product.Update)
 			//productGroup.DELETE("/:id", product.Delete)
+		}
+		categoryGroup := api.Group("/category")
+		{
+			category := new(controllers.CategoryController)
+			categoryGroup.GET("/", category.GetAll)
+			//categoryGroup.GET("/:id", category.Gets)
+			categoryGroup.POST("/", category.Create)
+			//categoryGroup.PUT("/:id", category.Update)
+			//categoryGroup.DELETE("/:id", category.Delete)
 		}
 	}
 	go server.Serve()

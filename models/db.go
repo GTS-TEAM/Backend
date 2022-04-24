@@ -36,7 +36,7 @@ func Init() {
 	if err := db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`).Error; err != nil {
 		fmt.Printf("error while creating MyDb extension 'uuid-ossp': %s\n", err)
 	}
-	err = db.AutoMigrate(&User{}, &Token{}, &Product{})
+	err = db.AutoMigrate(&User{}, &Token{}, &Product{},&Category{})
 	if err != nil {
 		log.Println(err)
 	}
