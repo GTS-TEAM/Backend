@@ -115,10 +115,20 @@ func main() {
 			user := new(controllers.UserController)
 			userGroup.GET("/", TokenAuthMiddleware(), user.Get)
 			//userGroup.GET("/", user.GetAll)
-			//userGroup.GET("/:id", user.Get)
+			//userGroup.GET("/:id", user.Gets)
 			//userGroup.POST("/", user.Create)
 			//userGroup.PUT("/:id", user.Update)
 			//userGroup.DELETE("/:id", user.Delete)
+		}
+		productGroup := api.Group("/product")
+		{
+			product := new(controllers.ProductController)
+			//productGroup.GET("/", TokenAuthMiddleware(), product.Gets)
+			productGroup.GET("/", product.GetAll)
+			//productGroup.GET("/:id", product.Gets)
+			productGroup.POST("/", product.Create)
+			//productGroup.PUT("/:id", product.Update)
+			//productGroup.DELETE("/:id", product.Delete)
 		}
 	}
 	go server.Serve()

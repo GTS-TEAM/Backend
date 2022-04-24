@@ -1,6 +1,8 @@
 package models
 
 import (
+	"database/sql/driver"
+	"encoding/json"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"time"
@@ -15,5 +17,19 @@ type BaseModel struct {
 
 func (base *BaseModel) BeforeCreate(tx *gorm.DB) error {
 	base.ID = uuid.NewV4()
+	return nil
+}
+
+type JSONB map[string]interface{}
+
+func (j JSONB) Value() (driver.Value, error) {
+	valueString, err := json.Marshal(j)
+	return string(valueString), err
+}
+
+func (j *JSONB) Scan(value interface{}) error {
+	if err := json.Unmarshal(value.([]byte), &j); err != nil {
+		return err
+	}
 	return nil
 }
