@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddb0a7f6-6fd8-494c-9d2f-94841382b8e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/controllers/category.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/e-commerce-api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/e-commerce-api.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/product.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/product.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/server.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/server.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/category.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/category.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/product.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/product.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +57,9 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="28AtBx5sJ3scTRvnWRHddr2tzHp" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -67,17 +68,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DefaultGoTemplateProperty" value="Go File" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="go.formatter.settings.were.checked" value="true" />
-    <property name="go.import.settings.migrated" value="true" />
-    <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
-    <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Kyanon/supplier-management" />
-    <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="e-commerce-api" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="next" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="e-commerce-api" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="next" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -93,9 +108,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="VgoProject">
-    <integration-enabled>true</integration-enabled>
   </component>
 </project>

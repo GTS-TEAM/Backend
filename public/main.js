@@ -1,5 +1,4 @@
 const messages = document.querySelector('#messages')
-const send = document.querySelector('#send')
 
 const socket = io("ws://localhost:8080",{
     path: "/socket.io",
@@ -16,32 +15,6 @@ socket.on('connect', () => {
         insertMessage({content:message})
     })
 })
-
-// ws.onmessage = function (msg) {
-//     console.log(msg)
-//
-//     // insertMessage(JSON.parse(msg))
-// };
-
-// ws.onopen = function () {
-//     ws.send('Hello Server')
-//     console.log('connected')
-//     const rawFile = new XMLHttpRequest();
-//     rawFile.open("GET", "./logs/server.log", false);
-//     rawFile.onreadystatechange = function ()
-//     {
-//         if(rawFile.readyState === 4)
-//         {
-//             if(rawFile.status === 200 || rawFile.status == 0)
-//             {
-//                 const allText = rawFile.responseText;
-//                 insertMessage({content: allText})
-//             }
-//         }
-//     }
-//     insertMessage({content: "Connected to server"})
-//
-// };
 
 /**
  * Insert a message into the UI
