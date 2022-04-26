@@ -19,35 +19,422 @@
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:22:32 | 502 |       505.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:22:32 | 502 |       505.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:53:54 | 502 |         505µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:53:54 | 502 |         505µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:22:40 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:22:40 | 502 |       568.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:53:55 | 502 |       630.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:53:55 | 502 |       1.728ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:22:50 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:22:50 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:53:57 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:53:57 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:22:51 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:22:51 | 502 |       504.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:54:00 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:54:00 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:22:52 | 502 |       574.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:22:52 | 502 |       574.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:44 | 502 |       504.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:44 | 502 |       504.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:22:56 | 502 |         716µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:22:56 | 502 |      1.2979ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:45 | 502 |       516.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:45 | 502 |      1.1585ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:23:03 | 502 |       508.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:23:03 | 502 |      1.0863ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:47 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:47 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:23:12 | 502 |       545.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:23:12 | 502 |      1.6056ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:49 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:49 | 502 |         506µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:23:21 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:23:21 | 502 |      1.0307ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:53 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:53 | 502 |       505.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:23:30 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:23:30 | 502 |      1.0507ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:54 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:54 | 502 |       505.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
 [GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
-[GIN] 2022/04/26 - 19:23:38 | 502 |       595.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
-[GIN] 2022/04/26 - 19:23:38 | 502 |      1.1804ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:55 | 502 |       560.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:55 | 502 |      1.6909ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:55:57 | 502 |       513.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:55:57 | 502 |      1.1634ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:03 | 502 |       505.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:03 | 502 |       505.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:08 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:08 | 502 |       116.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:13 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:13 | 502 |       504.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:18 | 502 |       615.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:18 | 502 |      1.6354ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:23 | 502 |         555µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:23 | 502 |      1.6113ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:28 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:28 | 502 |       504.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:34 | 502 |       506.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:34 | 502 |       1.082ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:41 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:41 | 502 |       565.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:50 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:50 | 502 |       519.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:56:56 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:56:56 | 502 |       264.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:02 | 502 |       508.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:02 | 502 |       508.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:04 | 200 |     28.0051ms |       127.0.0.1 | GET      "/"
+[GIN] 2022/04/26 - 19:57:04 | 200 |       771.1µs |       127.0.0.1 | GET      "/main.js"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:05 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:05 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:05 | 404 |      1.0541ms |       127.0.0.1 | GET      "/favicon.ico"
+[GIN] 2022/04/26 - 19:57:05 | 404 |      1.2352ms |       127.0.0.1 | GET      "/favicon.ico"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:06 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:06 | 502 |       505.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:08 | 502 |       476.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:08 | 502 |      1.5335ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:08 | 502 |       513.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:08 | 502 |      1.1441ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:11 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:11 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:12 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:12 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:12 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:12 | 502 |       505.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:13 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:13 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:14 | 502 |         631µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:14 | 502 |       1.202ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:14 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:14 | 502 |       503.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:15 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:15 | 502 |       505.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:15 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:15 | 502 |       506.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:16 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:16 | 502 |       546.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:17 | 502 |       523.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:17 | 502 |      1.0436ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:18 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:18 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:20 | 502 |       523.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:23 | 502 |       513.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:23 | 502 |      1.1546ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:26 | 502 |       666.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:26 | 502 |       810.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:28 | 502 |       508.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:28 | 502 |      1.1158ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:32 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:32 | 502 |       504.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:36 | 502 |       547.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:36 | 502 |      1.6097ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:38 | 502 |       505.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:38 | 502 |       505.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:43 | 502 |       573.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:43 | 502 |       624.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:44 | 502 |       558.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:50 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:50 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:51 | 502 |        81.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:51 | 502 |      1.1113ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:57:56 | 502 |       728.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:57:56 | 502 |       862.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:00 | 502 |       505.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:00 | 502 |       562.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:02 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:02 | 502 |        57.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:08 | 502 |       503.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:08 | 502 |       503.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:10 | 502 |       615.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:10 | 502 |      1.1263ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:14 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:14 | 502 |       513.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:19 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:19 | 502 |       505.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:20 | 502 |       902.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:20 | 502 |       957.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:27 | 502 |       427.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:27 | 502 |      1.5421ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:29 | 502 |       619.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:29 | 502 |      1.1363ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:37 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:37 | 502 |       504.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:37 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:37 | 502 |       875.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:45 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:45 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:46 | 502 |       545.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:46 | 502 |       602.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:52 | 502 |        72.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:52 | 502 |      1.1176ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:56 | 502 |       540.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:56 | 502 |      1.1098ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:58:58 | 502 |       558.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:58:58 | 502 |      1.6159ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:04 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:04 | 502 |         510µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:04 | 502 |       823.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:04 | 502 |      1.4267ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:10 | 502 |       512.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:10 | 502 |       512.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:12 | 502 |        73.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:12 | 502 |      1.2062ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:16 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:16 | 502 |       276.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:22 | 502 |       506.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:22 | 502 |       506.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:28 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:28 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:28 | 502 |       631.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:28 | 502 |       684.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:30 | 304 |       638.5µs |       127.0.0.1 | GET      "/"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:32 | 502 |       608.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:32 | 502 |       1.199ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:34 | 502 |       256.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:34 | 502 |      1.3891ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:37 | 502 |        72.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:37 | 502 |        1.18ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:40 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:40 | 502 |       714.3µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:42 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:42 | 502 |       504.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:46 | 502 |        80.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:46 | 502 |       264.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:47 | 304 |       706.5µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 19:59:47 | 304 |       723.1µs |             ::1 | GET      "/main.js"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:51 | 502 |       506.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:51 | 502 |       506.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:51 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:51 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 19:59:57 | 502 |       592.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 19:59:57 | 502 |       592.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:00 | 502 |       505.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:00 | 502 |       505.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:03 | 502 |       506.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:03 | 502 |       506.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:08 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:08 | 502 |       504.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:09 | 502 |       508.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:09 | 502 |      1.0557ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:13 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:13 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:13 | 304 |       621.1µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:13 | 200 |   25.7743664s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:13 | 200 |   25.7743664s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:15 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:15 | 502 |       585.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:15 | 304 |       997.9µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:15 | 200 |    2.0179723s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:15 | 200 |    2.0179723s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:15 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:15 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:16 | 304 |       784.6µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:16 | 200 |    730.3577ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:16 | 200 |    730.3577ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:19 | 304 |       465.3µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:19 | 200 |    2.6072718s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:19 | 200 |    2.6072718s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:19 | 304 |       931.7µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:19 | 200 |    377.6125ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:19 | 200 |    377.6125ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:00:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:20 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:22 | 304 |       130.5µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:22 | 200 |    2.5095853s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:22 | 200 |    2.5095853s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:23 | 304 |      1.0094ms |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:23 | 200 |    732.3136ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:23 | 200 |    732.3136ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:23 | 304 |       895.8µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:23 | 200 |    609.8663ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:23 | 200 |    609.8663ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:24 | 304 |       937.6µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:00:24 | 200 |    493.0543ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:00:24 | 200 |    493.0543ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:33 | 304 |       497.5µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:01:33 | 200 |          1m8s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:33 | 200 |          1m8s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:34 | 304 |       411.5µs |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:01:34 | 200 |    673.9016ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:34 | 200 |    673.9016ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:34 | 304 |            0s |             ::1 | GET      "/"
+[GIN] 2022/04/26 - 20:01:34 | 200 |    589.3854ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:34 | 200 |    589.3854ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:36 | 200 |    1.8379618s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:36 | 200 |    1.8379618s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:36 | 502 |       504.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:36 | 502 |       504.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:37 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:37 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:39 | 502 |       690.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:39 | 502 |      1.2884ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:42 | 502 |       672.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:42 | 502 |      1.1819ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:43 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:43 | 502 |       509.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:43 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:43 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:44 | 502 |       504.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:44 | 502 |      1.0254ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:44 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:45 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:45 | 502 |       505.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:51 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:51 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:53 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:53 | 502 |       750.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:01:57 | 502 |       506.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:01:57 | 502 |       506.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:06 | 502 |       506.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:06 | 502 |       506.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:12 | 502 |       509.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:12 | 502 |      1.0911ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:20 | 502 |       563.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:20 | 502 |       1.078ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:29 | 502 |       296.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:29 | 502 |      1.3523ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:39 | 502 |       573.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:39 | 502 |      1.6454ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:47 | 502 |       713.6µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:47 | 502 |      1.2257ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:53 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:53 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:02:59 | 502 |       505.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:02:59 | 502 |       505.5µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:05 | 502 |       506.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:05 | 502 |       506.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:11 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:11 | 502 |       504.4µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:17 | 502 |       537.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:17 | 502 |       537.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:23 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:23 | 502 |       294.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:29 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:29 | 502 |       555.1µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:35 | 502 |       548.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:35 | 502 |       548.2µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:41 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:41 | 502 |       552.9µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:47 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:47 | 502 |            0s |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:53 | 502 |        67.8µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:53 | 502 |         146µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 403 with 502
+[GIN] 2022/04/26 - 20:03:59 | 502 |       539.7µs |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
+[GIN] 2022/04/26 - 20:03:59 | 502 |       1.619ms |             ::1 | GET      "/socket.io/?EIO=3&transport=websocket"
