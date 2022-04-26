@@ -3,6 +3,7 @@ version: '3.4'
 services:
   next:
     image: next
+    container_name: next
     build:
       context: .
       dockerfile: ./Dockerfile
