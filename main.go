@@ -124,7 +124,7 @@ func main() {
 			productGroup.GET("/", TokenAuthMiddleware(), product.GetProductsByCategory)
 			productGroup.GET("/:id", TokenAuthMiddleware(), product.GetProductsByCategory)
 			//productGroup.GET("/:id", product.Gets)
-			productGroup.POST("/", product.Create)
+			productGroup.POST("/", TokenAuthMiddleware(), product.Create)
 			//productGroup.PUT("/:id", product.Update)
 			//productGroup.DELETE("/:id", product.Delete)
 		}
