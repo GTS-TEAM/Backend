@@ -1,4 +1,3 @@
-#build stage
 FROM golang:alpine
 RUN apk update && apk upgrade && \
 apk add --no-cache bash git openssh
@@ -11,8 +10,8 @@ RUN go mod download
         
 COPY . .
         
-RUN go build
+RUN go build -o main .
 
 EXPOSE 8080
 
-CMD ["./next"]
+CMD ["./main"]

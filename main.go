@@ -29,7 +29,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
@@ -112,7 +112,7 @@ func main() {
 		{
 			user := new(controllers.UserController)
 			userGroup.GET("/", TokenAuthMiddleware(), user.Get)
-			//userGroup.GET("/", user.GetAll)
+			//userGroup.GET("/", user.GetProductsByCategory)
 			//userGroup.GET("/:id", user.Gets)
 			//userGroup.POST("/", user.Create)
 			//userGroup.PUT("/:id", user.Update)
@@ -121,8 +121,8 @@ func main() {
 		productGroup := api.Group("/product")
 		{
 			product := new(controllers.ProductController)
-			//productGroup.GET("/", TokenAuthMiddleware(), product.Gets)
-			productGroup.GET("/:id", product.GetAll)
+			productGroup.GET("/", TokenAuthMiddleware(), product.GetProductsByCategory)
+			productGroup.GET("/:id", TokenAuthMiddleware(), product.GetProductsByCategory)
 			//productGroup.GET("/:id", product.Gets)
 			productGroup.POST("/", product.Create)
 			//productGroup.PUT("/:id", product.Update)
