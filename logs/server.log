@@ -22,9 +22,10 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
-[GIN] 2022/04/29 - 16:38:29 | 400 |      2.4479ms |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 16:38:29 | 400 |       3.701ms |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 16:39:15 | 200 |    4.8020582s |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 16:39:15 | 200 |    4.8020582s |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 16:39:23 | 200 |    4.8951533s |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 16:39:23 | 200 |    4.8958646s |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 19:15:50 | 200 |     82.0666ms |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 19:15:50 | 200 |     82.0666ms |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 19:16:16 | 200 |    323.6505ms |       127.0.0.1 | POST     "/api/auth/login"
+[GIN] 2022/04/29 - 19:16:16 | 200 |    324.9874ms |       127.0.0.1 | POST     "/api/auth/login"
+[GIN] 2022/04/29 - 19:16:18 | 204 |            0s |             ::1 | OPTIONS  "/api/category"
+[GIN] 2022/04/29 - 19:16:18 | 200 |     62.0401ms |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 19:16:18 | 200 |     63.3029ms |             ::1 | GET      "/api/category"
