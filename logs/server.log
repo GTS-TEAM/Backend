@@ -4,18 +4,27 @@
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /api/                     --> main.main.func3 (9 handlers)
 [GIN-debug] POST   /api/auth/login           --> next/controllers.(*AuthController).Login-fm (9 handlers)
 [GIN-debug] POST   /api/auth/register        --> next/controllers.(*AuthController).Register-fm (9 handlers)
 [GIN-debug] POST   /api/auth/refresh-token   --> next/controllers.(*AuthController).RefreshToken-fm (9 handlers)
-[GIN-debug] GET    /api/user/                --> next/controllers.(*UserController).Get-fm (10 handlers)
-[GIN-debug] GET    /api/product/             --> next/controllers.(*ProductController).GetProductsByCategory-fm (10 handlers)
-[GIN-debug] GET    /api/product/:id          --> next/controllers.(*ProductController).GetProductsByCategory-fm (10 handlers)
-[GIN-debug] POST   /api/product/             --> next/controllers.(*ProductController).Create-fm (9 handlers)
-[GIN-debug] GET    /api/category/            --> next/controllers.CategoryController.GetAll-fm (9 handlers)
-[GIN-debug] POST   /api/category/            --> next/controllers.CategoryController.Create-fm (9 handlers)
+[GIN-debug] GET    /api/user                 --> next/controllers.(*UserController).Get-fm (10 handlers)
+[GIN-debug] GET    /api/product              --> next/controllers.(*ProductController).GetProductsByCategory-fm (10 handlers)
+[GIN-debug] GET    /api/product/:id          --> next/controllers.(*ProductController).GetProductById-fm (10 handlers)
+[GIN-debug] POST   /api/product              --> next/controllers.(*ProductController).Create-fm (10 handlers)
+[GIN-debug] PUT    /api/product/:id          --> next/controllers.(*ProductController).Update-fm (9 handlers)
+[GIN-debug] DELETE /api/product/:id          --> next/controllers.(*ProductController).Delete-fm (9 handlers)
+[GIN-debug] GET    /api/product/reviews/:id  --> next/controllers.(*ProductController).GetReviews-fm (10 handlers)
+[GIN-debug] POST   /api/product/reviews      --> next/controllers.(*ProductController).CreateReviews-fm (10 handlers)
+[GIN-debug] GET    /api/category             --> next/controllers.CategoryController.GetAll-fm (9 handlers)
+[GIN-debug] POST   /api/category             --> next/controllers.CategoryController.Create-fm (9 handlers)
 [GIN-debug] GET    /socket.io/               --> github.com/gin-gonic/gin.WrapH.func1 (9 handlers)
 [GIN-debug] POST   /socket.io/*any           --> github.com/gin-gonic/gin.WrapH.func1 (9 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2022/04/29 - 16:38:29 | 400 |      2.4479ms |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 16:38:29 | 400 |       3.701ms |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 16:39:15 | 200 |    4.8020582s |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 16:39:15 | 200 |    4.8020582s |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 16:39:23 | 200 |    4.8951533s |             ::1 | GET      "/api/category"
+[GIN] 2022/04/29 - 16:39:23 | 200 |    4.8958646s |             ::1 | GET      "/api/category"

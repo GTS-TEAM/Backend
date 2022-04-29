@@ -37,8 +37,9 @@ func (ca CategoryController) Create(c *gin.Context) {
 func (ca CategoryController) GetAll(c *gin.Context) {
 
 	category := models.Category{}
+	paging := models.GeneratePaginationFromRequest(c)
 
-	categories, err := category.GetAll()
+	categories, err := category.GetAll(paging)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),

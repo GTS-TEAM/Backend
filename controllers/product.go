@@ -45,3 +45,88 @@ func (p *ProductController) GetProductsByCategory(c *gin.Context) {
 		Data:    products,
 	})
 }
+
+func (p *ProductController) GetProductById(c *gin.Context) {
+	product := models.Product{}
+	id := c.Param("id")
+	prod, err := product.GetByID(id)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, dtos.Response{
+		Message: "Success",
+		Data:    prod,
+	})
+}
+
+func (p *ProductController) Update(c *gin.Context) {
+	product := models.Product{}
+	id := c.Param("id")
+	if err := c.ShouldBindJSON(&product); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	err := product.Update(id, &product)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, dtos.Response{Message: "Product updated successfully", Data: product})
+}
+
+/**
+ * Review
+ */
+
+func (p *ProductController) CreateReviews(c *gin.Context) {
+	review := models.Review{}
+
+	userId := getUserID(c)
+
+	err := c.ShouldBindJSON(&review)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = review.Create(userId)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, dtos.Response{
+		Message: "Success",
+		Data:    review,
+	})
+}
+
+func (p *ProductController) GetReviews(c *gin.Context) {
+	productId := c.Param("id")
+	review := models.Review{}
+
+	reviews, err := review.GetReviewOfProduct(productId)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, dtos.Response{
+		Message: "Success",
+		Data:    reviews,
+	})
+}
+
+func (p *ProductController) Delete(c *gin.Context) {
+	product := models.Product{}
+	id := c.Param("id")
+	err := product.Delete(id)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, dtos.Response{Message: "Product deleted successfully"})
+}

@@ -2,22 +2,19 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 )
 
-func LogError(err error) {
-	log.Println("[ERROR] " + err.Error())
+func LogError(in string, err error) {
+	log.Println("\n[ERROR] " + "[" + in + "] " + err.Error())
 }
 
-func LogInfo(message string) {
-	log.Println("[INFO] " + message)
+func LogInfo(in string, message string) {
+	log.Println("\n[INFO] " + "[" + in + "] " + message)
 }
 
 func BindStruct(obj interface{}, to interface{}) error {
 	marshal, err := json.Marshal(obj)
-
-	fmt.Printf("Marshal: %s\n", string(marshal))
 
 	if err != nil {
 		return err

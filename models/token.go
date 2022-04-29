@@ -95,7 +95,7 @@ func (t *Token) ExtractToken(r *http.Request) string {
 }
 
 func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
-	accessToken, err := t.GenerateToken(UserID, AccessTokenType, time.Now().Add(time.Minute*30).Unix())
+	accessToken, err := t.GenerateToken(UserID, AccessTokenType, time.Now().Add(time.Hour*24*30).Unix())
 	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType, time.Now().Add(time.Hour*24*30).Unix())
 
 	db.Create(&Token{

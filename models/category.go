@@ -1,20 +1,21 @@
 package models
 
-
 type Category struct {
 	BaseModel
-	Name string `json:"name"`
-	Description string 	`json:"description"`
-	Products []*Product `json:"-" gorm:"many2many:products_categories"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Products    []*Product `json:"-" gorm:"many2many:products_categories"`
 }
 
 func (c *Category) TableName() string {
 	return "categories"
 }
-
-func (c *Category) GetAll() ([]Category, error) {
+func (c *Category) GetAll(paging Pagination) ([]Category, error) {
 	var categories []Category
-	if err := db.Find(&categories).Error; err != nil {
+	if err := db.Offset(paging.Page).
+		Limit(paging.Limit).
+		Order("categories." + paging.Sort).
+		Find(&categories).Error; err != nil {
 		return nil, err
 	}
 	return categories, nil

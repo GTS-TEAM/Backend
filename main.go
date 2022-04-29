@@ -26,7 +26,7 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
@@ -84,7 +84,7 @@ func main() {
 	})
 
 	r := gin.Default()
-
+	r.RedirectTrailingSlash = true
 	r.Use(static.Serve("/", static.LocalFile("./public", true)))
 	r.Use(CORSMiddleware())
 	r.Use(RequestIDMiddleware())
@@ -96,50 +96,39 @@ func main() {
 
 	api := r.Group("/api")
 	{
-		api.GET("/", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "Hello World",
-			})
-		})
-		authGroup := api.Group("/auth")
-		{
-			auth := new(controllers.AuthController)
-			authGroup.POST("/login", auth.Login)
-			authGroup.POST("/register", auth.Register)
-			authGroup.POST("/refresh-token", auth.RefreshToken)
-		}
-		userGroup := api.Group("/user")
-		{
-			user := new(controllers.UserController)
-			userGroup.GET("/", TokenAuthMiddleware(), user.Get)
-			//userGroup.GET("/", user.GetProductsByCategory)
-			//userGroup.GET("/:id", user.Gets)
-			//userGroup.POST("/", user.Create)
-			//userGroup.PUT("/:id", user.Update)
-			//userGroup.DELETE("/:id", user.Delete)
-		}
-		productGroup := api.Group("/product")
-		{
-			product := new(controllers.ProductController)
-			productGroup.GET("/", TokenAuthMiddleware(), product.GetProductsByCategory)
-			productGroup.GET("/:id", TokenAuthMiddleware(), product.GetProductsByCategory)
-			//productGroup.GET("/:id", product.Gets)
-			productGroup.POST("/", TokenAuthMiddleware(), product.Create)
-			//productGroup.PUT("/:id", product.Update)
-			//productGroup.DELETE("/:id", product.Delete)
-		}
-		categoryGroup := api.Group("/category")
-		{
-			category := new(controllers.CategoryController)
-			categoryGroup.GET("/", category.GetAll)
-			//categoryGroup.GET("/:id", category.Gets)
-			categoryGroup.POST("/", category.Create)
-			//categoryGroup.PUT("/:id", category.Update)
-			//categoryGroup.DELETE("/:id", category.Delete)
-		}
+		auth := new(controllers.AuthController)
+		api.POST("/auth/login", auth.Login)
+		api.POST("/auth/register", auth.Register)
+		api.POST("/auth/refresh-token", auth.RefreshToken)
+
+		user := new(controllers.UserController)
+		api.GET("/user", TokenAuthMiddleware(), user.Get)
+		//userGroup.GET("/", user.GetProductsByCategory)
+		//userGroup.GET("/:id", user.Gets)
+		//userGroup.POST("/", user.Create)
+		//userGroup.PUT("/:id", user.Update)
+		//userGroup.DELETE("/:id", user.Delete)
+		product := new(controllers.ProductController)
+		api.GET("/product", TokenAuthMiddleware(), product.GetProductsByCategory)
+		api.GET("/product/:id", TokenAuthMiddleware(), product.GetProductById)
+		api.POST("/product", TokenAuthMiddleware(), product.Create)
+		api.PUT("/product/:id", product.Update)
+		api.DELETE("/product/:id", product.Delete)
+
+		api.GET("/product/reviews/:id", TokenAuthMiddleware(), product.GetReviews)
+		api.POST("/product/reviews", TokenAuthMiddleware(), product.CreateReviews)
+
+		category := new(controllers.CategoryController)
+		api.GET("/category", category.GetAll)
+		api.POST("/category", category.Create)
+		//api.POST("/category", category.Create)
+		//categoryGroup.PUT("/:id", category.Update)
+		//categoryGroup.DELETE("/:id", category.Delete)
 	}
+
 	go server.Serve()
 	defer server.Close()
+
 	r.GET("/socket.io/", gin.WrapH(server))
 	r.POST("/socket.io/*any", gin.WrapH(server))
 	// Method 2 using server.ServerHTTP(Writer, Request) and also you can simply this by using gin.WrapH

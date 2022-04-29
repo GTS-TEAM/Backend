@@ -63,7 +63,7 @@ func GeneratePaginationFromRequest(c *gin.Context) Pagination {
 	}
 	return Pagination{
 		Limit: limit,
-		Page:  page,
 		Sort:  sort,
+		Page:  (page - 1) * limit,
 	}
 }
