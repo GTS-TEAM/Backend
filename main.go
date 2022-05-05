@@ -124,6 +124,15 @@ func main() {
 		//api.POST("/category", category.Create)
 		//categoryGroup.PUT("/:id", category.Update)
 		//categoryGroup.DELETE("/:id", category.Delete)
+
+		metadata := new(controllers.MetadataController)
+		api.GET("/metadata", metadata.GetAll)
+		api.POST("/metadata", metadata.Create)
+		api.PUT("/metadata/:id", metadata.Update)
+
+		stock := new(controllers.StockController)
+		api.GET("/stock", TokenAuthMiddleware(), stock.Get)
+		api.POST("/stock", TokenAuthMiddleware(), stock.Create)
 	}
 
 	go server.Serve()

@@ -36,7 +36,7 @@ func Init() {
 	if err := db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`).Error; err != nil {
 		fmt.Printf("error while creating MyDb extension 'uuid-ossp': %s\n", err)
 	}
-	err = db.AutoMigrate(&User{}, &Token{}, &Product{}, &Category{}, &Review{})
+	err = db.AutoMigrate(&User{}, &Token{}, &Product{}, &Category{}, &Review{}, &Metadata{}, &Stock{})
 	if err != nil {
 		log.Println(err)
 	}
@@ -47,10 +47,22 @@ func ConnectDB(dataSourceName string) error {
 	var err error
 	var gdb *gorm.DB
 	once.Do(func() {
+		//newLogger := logger.New(
+		//	log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		//	logger.Config{
+		//		SlowThreshold:             time.Second,   // Slow SQL threshold
+		//		LogLevel:                  logger.Silent, // Log level
+		//		IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
+		//		Colorful:                  false,         // Disable color
+		//	},
+		//)
+
 		gdb, err = gorm.Open(postgres.New(postgres.Config{
 			DSN:                  dataSourceName,
 			PreferSimpleProtocol: true,
-		}), &gorm.Config{})
+		}), &gorm.Config{
+			//Logger: newLogger,
+		})
 		if err != nil {
 			log.Println("error while connecting to database: ", err)
 			return

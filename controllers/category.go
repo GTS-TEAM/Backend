@@ -20,7 +20,7 @@ func (ca CategoryController) Create(c *gin.Context) {
 		return
 	}
 
-	err = category.Create(category)
+	err = category.Create()
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),

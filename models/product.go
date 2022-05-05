@@ -5,19 +5,20 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm/clause"
 	"next/utils"
+	"strings"
 )
 
 type ProductResponse struct {
 	BaseModel
-	Name        string         `json:"name"`
-	Price       float64        `json:"price"`
-	Description string         `json:"description"`
-	Metadata    JSONB          `json:"metadata"`
-	Quantity    int            `json:"quantity"`
-	Images      pq.StringArray `json:"images"`
-	Categories  []*Category    `json:"categories,omitempty"`
-	User        *User          `json:"creator"`
-	Rating      float64        `json:"rating"`
+	Name        string                   `json:"name"`
+	Price       float64                  `json:"price"`
+	Description string                   `json:"description"`
+	Metadata    []map[string]interface{} `json:"metadata"`
+	Stock       int                      `json:"stock"`
+	Images      pq.StringArray           `json:"images"`
+	Categories  []*Category              `json:"categories,omitempty"`
+	User        *User                    `json:"creator"`
+	Rating      float64                  `json:"rating"`
 }
 
 type ProductsResponse struct {
@@ -27,18 +28,16 @@ type ProductsResponse struct {
 
 type Product struct {
 	BaseModel
-	Name         string         `json:"name"`
-	Price        float64        `json:"price"`
-	Description  string         `json:"description"`
-	Metadata     JSONB          `gorm:"type:jsonb;not null" json:"metadata"`
-	Quantity     int            `json:"quantity"`
-	Images       pq.StringArray `gorm:"type:text" json:"images"`
-	Categories   []*Category    `json:"categories,omitempty" gorm:"many2many:products_categories"`
-	CategoriesId []uuid.UUID    `gorm:"-" json:"categories_id"`
-	UserID       uuid.UUID      `gorm:"type:uuid" json:"-"`
-	User         *User          `json:"creator" gorm:"foreignkey:UserID"`
-	Stock        int            `json:"stock"`
-	Specific     JSONB          `json:"specific" gorm:"type:jsonb;null"`
+	Name         string                   `json:"name"`
+	Price        float64                  `json:"price"`
+	Description  string                   `json:"description"`
+	Images       pq.StringArray           `gorm:"type:text" json:"images"`
+	Categories   []*Category              `json:"categories,omitempty" gorm:"many2many:products_categories"`
+	CategoriesId []uuid.UUID              `gorm:"-" json:"categories_id"`
+	UserID       uuid.UUID                `gorm:"type:uuid" json:"-"`
+	User         *User                    `json:"creator" gorm:"foreignkey:UserID"`
+	Specific     JSONB                    `json:"specific" gorm:"type:jsonb;null"`
+	Metadata     []map[string]interface{} `json:"metadata" gorm:"-"`
 }
 
 func (p *Product) Create(userId string, dto *Product) error {
@@ -64,7 +63,12 @@ func (p *Product) GetAll(category string, paging Pagination) (data ProductsRespo
 	var products []Product
 
 	if category == "" {
-		err = db.Preload(clause.Associations).Offset(paging.Page).Limit(paging.Limit).Order(paging.Sort).Find(&products).Count(&data.Total).Error
+		err = db.Preload(clause.Associations).
+			Offset(paging.Page).
+			Limit(paging.Limit).
+			Order(paging.Sort).
+			Find(&products).
+			Count(&data.Total).Error
 		if err != nil {
 			utils.LogError("Product GetAll", err)
 		}
@@ -81,6 +85,60 @@ func (p *Product) GetAll(category string, paging Pagination) (data ProductsRespo
 			Where("products.deleted_at IS NULL").
 			Offset(paging.Page).Limit(paging.Limit).
 			Order("products." + paging.Sort).Find(&products).Count(&data.Total)
+	}
+
+	// TODO: Get quantity
+
+	for i, _ := range products {
+		var metadata []map[string]interface{}
+
+		db.Raw("select key, array_agg(distinct value) from stocks join lateral (select * from jsonb_each_text(metadata)) j on true group by key").
+			Where("product_id = ?", products[i].ID).
+			Scan(&metadata)
+
+		for _, v := range metadata {
+			ar := v["array_agg"].(string)
+			ar = ar[1 : len(ar)-1]
+
+			var values []map[string]interface{}
+
+			for _, va := range strings.Split(ar, ",") {
+				values = append(values, map[string]interface{}{
+					"value":    va,
+					"quantity": 0,
+				})
+			}
+
+			m := map[string]interface{}{
+				"key":    v["key"],
+				"values": values,
+			}
+
+			/*
+				[
+					{
+						"key": "size",
+						"values": [{"key":"S","quantity":10}, {"key":"M","quantity":20}]
+					}
+
+				]
+
+			*/
+
+			for _, value := range m["values"].([]map[string]interface{}) {
+				/*
+					{
+								"key": "size",
+								"values": [{"key":"S","quantity":10}, {"key":"M","quantity":20}]
+					}
+				*/
+				var count int64
+				db.Debug().Model(&Stock{}).Select("sum(quantity)").Where("product_id = ? AND metadata->>'"+m["key"].(string)+"' = ?", products[i].ID, value["value"].(string)).Scan(&count)
+				value["quantity"] = count
+			}
+
+			products[i].Metadata = append(products[i].Metadata, m)
+		}
 	}
 
 	err = utils.BindStruct(&products, &data.Products)

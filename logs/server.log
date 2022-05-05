@@ -17,15 +17,15 @@
 [GIN-debug] POST   /api/product/reviews      --> next/controllers.(*ProductController).CreateReviews-fm (10 handlers)
 [GIN-debug] GET    /api/category             --> next/controllers.CategoryController.GetAll-fm (9 handlers)
 [GIN-debug] POST   /api/category             --> next/controllers.CategoryController.Create-fm (9 handlers)
+[GIN-debug] GET    /api/metadata             --> next/controllers.(*MetadataController).GetAll-fm (9 handlers)
+[GIN-debug] POST   /api/metadata             --> next/controllers.(*MetadataController).Create-fm (9 handlers)
+[GIN-debug] PUT    /api/metadata/:id         --> next/controllers.(*MetadataController).Update-fm (9 handlers)
+[GIN-debug] GET    /api/stock                --> next/controllers.(*StockController).Get-fm (10 handlers)
+[GIN-debug] POST   /api/stock                --> next/controllers.(*StockController).Create-fm (10 handlers)
 [GIN-debug] GET    /socket.io/               --> github.com/gin-gonic/gin.WrapH.func1 (9 handlers)
 [GIN-debug] POST   /socket.io/*any           --> github.com/gin-gonic/gin.WrapH.func1 (9 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
-[GIN] 2022/04/29 - 19:15:50 | 200 |     82.0666ms |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 19:15:50 | 200 |     82.0666ms |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 19:16:16 | 200 |    323.6505ms |       127.0.0.1 | POST     "/api/auth/login"
-[GIN] 2022/04/29 - 19:16:16 | 200 |    324.9874ms |       127.0.0.1 | POST     "/api/auth/login"
-[GIN] 2022/04/29 - 19:16:18 | 204 |            0s |             ::1 | OPTIONS  "/api/category"
-[GIN] 2022/04/29 - 19:16:18 | 200 |     62.0401ms |             ::1 | GET      "/api/category"
-[GIN] 2022/04/29 - 19:16:18 | 200 |     63.3029ms |             ::1 | GET      "/api/category"
+[GIN] 2022/05/05 - 08:46:05 | 200 |    113.3412ms |             ::1 | PUT      "/api/metadata/54092bad-f6e6-414b-a461-3fdf3be65139"
+[GIN] 2022/05/05 - 08:46:05 | 200 |    115.9492ms |             ::1 | PUT      "/api/metadata/54092bad-f6e6-414b-a461-3fdf3be65139"
