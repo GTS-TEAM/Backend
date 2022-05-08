@@ -109,14 +109,14 @@ func main() {
 		//userGroup.PUT("/:id", user.Update)
 		//userGroup.DELETE("/:id", user.Delete)
 		product := new(controllers.ProductController)
-		api.GET("/product", TokenAuthMiddleware(), product.GetProductsByCategory)
-		api.GET("/product/:id", TokenAuthMiddleware(), product.GetProductById)
+		api.GET("/product", product.GetProductsByCategory)
+		api.GET("/product/:id", product.GetProductById)
 		api.POST("/product", TokenAuthMiddleware(), product.Create)
-		api.PUT("/product/:id", product.Update)
-		api.DELETE("/product/:id", product.Delete)
+		api.PUT("/product/:id", TokenAuthMiddleware(), product.Update)
+		api.DELETE("/product/:id", TokenAuthMiddleware(), product.Delete)
 
-		api.GET("/product/reviews/:id", TokenAuthMiddleware(), product.GetReviews)
-		api.POST("/product/reviews", TokenAuthMiddleware(), product.CreateReviews)
+		api.GET("/product/reviews/:id", product.GetReviews)
+		api.POST("/product/reviews", product.CreateReviews)
 
 		category := new(controllers.CategoryController)
 		api.GET("/category", category.GetAll)
@@ -130,9 +130,14 @@ func main() {
 		api.POST("/metadata", metadata.Create)
 		api.PUT("/metadata/:id", metadata.Update)
 
+		variant := new(controllers.VariantController)
+		api.GET("/variant", variant.Get)
+		api.POST("/variant", variant.Create)
+
 		stock := new(controllers.StockController)
-		api.GET("/stock", TokenAuthMiddleware(), stock.Get)
-		api.POST("/stock", TokenAuthMiddleware(), stock.Create)
+		//api.GET("/stock", TokenAuthMiddleware(), stock.Get)
+		api.PATCH("/stock", TokenAuthMiddleware(), stock.Update)
+		api.GET("/stock", stock.Get)
 	}
 
 	go server.Serve()

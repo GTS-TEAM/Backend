@@ -5,16 +5,24 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm/clause"
 	"next/utils"
-	"strings"
 )
+
+type VariantProductResponse struct {
+	Key    string                 `json:"key"`
+	Values []ValueVariantResponse `json:"values"`
+}
+
+type ValueVariantResponse struct {
+	Value    string `json:"value"`
+	Quantity int64  `json:"quantity"`
+}
 
 type ProductResponse struct {
 	BaseModel
 	Name        string                   `json:"name"`
 	Price       float64                  `json:"price"`
 	Description string                   `json:"description"`
-	Metadata    []map[string]interface{} `json:"metadata"`
-	Stock       int                      `json:"stock"`
+	Variants    []VariantProductResponse `json:"variants,omitempty"`
 	Images      pq.StringArray           `json:"images"`
 	Categories  []*Category              `json:"categories,omitempty"`
 	User        *User                    `json:"creator"`
@@ -28,16 +36,31 @@ type ProductsResponse struct {
 
 type Product struct {
 	BaseModel
-	Name         string                   `json:"name"`
-	Price        float64                  `json:"price"`
-	Description  string                   `json:"description"`
-	Images       pq.StringArray           `gorm:"type:text" json:"images"`
-	Categories   []*Category              `json:"categories,omitempty" gorm:"many2many:products_categories"`
-	CategoriesId []uuid.UUID              `gorm:"-" json:"categories_id"`
-	UserID       uuid.UUID                `gorm:"type:uuid" json:"-"`
-	User         *User                    `json:"creator" gorm:"foreignkey:UserID"`
-	Specific     JSONB                    `json:"specific" gorm:"type:jsonb;null"`
-	Metadata     []map[string]interface{} `json:"metadata" gorm:"-"`
+	Name         string         `json:"name"`
+	Price        float64        `json:"price"`
+	Description  string         `json:"description"`
+	Images       pq.StringArray `gorm:"type:text" json:"images"`
+	Categories   []*Category    `json:"categories,omitempty" gorm:"many2many:products_categories"`
+	CategoriesId []uuid.UUID    `gorm:"-" json:"categories_id"`
+	UserID       uuid.UUID      `gorm:"type:uuid" json:"-"`
+	User         *User          `json:"creator" gorm:"foreignkey:UserID"`
+	Specific     JSONB          `json:"specific" gorm:"type:jsonb;null"`
+	Variants     []Variant      `json:"variants" gorm:"-"`
+}
+
+func Combination(arr []Variant) []string {
+	if len(arr) == 1 {
+		return arr[0].Values
+	}
+
+	var result []string
+	var allCasesOfRest = Combination(arr[1:])
+	for i := 0; i < len(allCasesOfRest); i++ {
+		for j := 0; j < len(arr[0].Values); j++ {
+			result = append(result, arr[0].Values[j]+allCasesOfRest[i])
+		}
+	}
+	return result
 }
 
 func (p *Product) Create(userId string, dto *Product) error {
@@ -55,6 +78,37 @@ func (p *Product) Create(userId string, dto *Product) error {
 		utils.LogError("Product Create", err)
 		return err
 	}
+
+	var variants []Variant
+	var stock []Stock
+
+	// TODO : Use S in Solid
+
+	for _, variant := range dto.Variants {
+		variants = append(variants, Variant{
+			Key:       variant.Key,
+			Values:    variant.Values,
+			ProductID: dto.ID,
+		})
+	}
+
+	// TODO: Use S
+
+	for _, combinations := range Combination(dto.Variants) {
+		stock = append(stock, Stock{
+			ProductID: dto.ID,
+			Variant:   combinations,
+		})
+	}
+
+	if err := db.Create(&variants).Error; err != nil {
+		panic(err)
+	}
+
+	if err := db.Create(&stock).Error; err != nil {
+		panic(err)
+	}
+
 	return nil
 }
 
@@ -87,60 +141,6 @@ func (p *Product) GetAll(category string, paging Pagination) (data ProductsRespo
 			Order("products." + paging.Sort).Find(&products).Count(&data.Total)
 	}
 
-	// TODO: Get quantity
-
-	for i, _ := range products {
-		var metadata []map[string]interface{}
-
-		db.Raw("select key, array_agg(distinct value) from stocks join lateral (select * from jsonb_each_text(metadata)) j on true group by key").
-			Where("product_id = ?", products[i].ID).
-			Scan(&metadata)
-
-		for _, v := range metadata {
-			ar := v["array_agg"].(string)
-			ar = ar[1 : len(ar)-1]
-
-			var values []map[string]interface{}
-
-			for _, va := range strings.Split(ar, ",") {
-				values = append(values, map[string]interface{}{
-					"value":    va,
-					"quantity": 0,
-				})
-			}
-
-			m := map[string]interface{}{
-				"key":    v["key"],
-				"values": values,
-			}
-
-			/*
-				[
-					{
-						"key": "size",
-						"values": [{"key":"S","quantity":10}, {"key":"M","quantity":20}]
-					}
-
-				]
-
-			*/
-
-			for _, value := range m["values"].([]map[string]interface{}) {
-				/*
-					{
-								"key": "size",
-								"values": [{"key":"S","quantity":10}, {"key":"M","quantity":20}]
-					}
-				*/
-				var count int64
-				db.Debug().Model(&Stock{}).Select("sum(quantity)").Where("product_id = ? AND metadata->>'"+m["key"].(string)+"' = ?", products[i].ID, value["value"].(string)).Scan(&count)
-				value["quantity"] = count
-			}
-
-			products[i].Metadata = append(products[i].Metadata, m)
-		}
-	}
-
 	err = utils.BindStruct(&products, &data.Products)
 
 	for index, _ := range data.Products {
@@ -171,6 +171,32 @@ func (p *Product) GetByID(id string) (data ProductResponse, err error) {
 		utils.LogError("Product GetByID", err)
 		return
 	}
+
+	var variants []Variant
+
+	// Trả về list variant của product
+	// [{Key: 'color', Values: ['red', 'blue']}, {Key: 'size', Values: ['S', 'M', 'L']}]
+	err = db.Model(&Variant{}).Where("product_id = ?", id).Find(&variants).Error
+	if err != nil {
+		utils.LogError("Product GetByID", err)
+	}
+
+	for _, variant := range variants {
+		variantRes := VariantProductResponse{
+			Key: variant.Key,
+		}
+		for _, value := range variant.Values {
+			stock := Stock{}
+			db.Debug().Model(&Stock{}).Select("sum (quantity)").Where("variant LIKE ?", "%"+value+"%").Scan(&stock.Quantity)
+
+			variantRes.Values = append(variantRes.Values, ValueVariantResponse{
+				Value:    value,
+				Quantity: stock.Quantity,
+			})
+		}
+		data.Variants = append(data.Variants, variantRes)
+	}
+
 	err = db.Model(&Review{}).Select("AVG(rating) as rating").Where("product_id = ?", data.ID).Scan(&data.Rating).Error
 	if err != nil {
 		data.Rating = float64(0)

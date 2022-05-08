@@ -1,48 +1,24 @@
 package models
 
 import (
-	"errors"
 	uuid "github.com/satori/go.uuid"
-	"net/url"
 )
 
 type Stock struct {
 	BaseModel
-	Quantity  int64     `json:"quantity"`
-	Product   Product   `json:"product"`
-	ProductID uuid.UUID `json:"product_id"`
-	Metadata  JSONB     `json:"metadata" gorm:"type:jsonb;null"`
+	ProductID uuid.UUID `json:"product_id" gorm:"type:uuid"`
+	Quantity  int64     `json:"quantity" gorm:"default:0"`
+	Variant   string    `json:"variant"`
 }
 
-func (stock *Stock) Create() error {
-	return db.Create(stock).Error
+func (s *Stock) Create() error {
+	return db.Create(s).Error
 }
 
-func (stock *Stock) Update(id string) error {
-	return db.Model(&Stock{}).Where("id = ?", id).Updates(&stock).Error
+func (s *Stock) Update() error {
+	return db.Model(s).Where("product_id = ? AND variant = ?", s.ProductID, s.Variant).Update("quantity", s.Quantity).Error
 }
 
-func (stock *Stock) Delete(id string) error {
-	return db.Where("id = ?", id).Delete(&Stock{}).Error
-}
-
-func (stock *Stock) Get(q url.Values) (int64, error) {
-
-	var query string
-	productId := q.Get("product_id")
-	if productId == "" {
-		return 0, errors.New("product_id is required")
-	}
-	q.Del("product_id")
-	// attrs->>'name' = 'hello';
-	for k, v := range q {
-		query += " AND metadata->>'" + k + "' = '" + v[0] + "'"
-	}
-
-	err := db.Model(&Stock{}).Where("product_id = ?"+query, productId).First(&stock).Error
-
-	if err != nil {
-		return 0, err
-	}
-	return stock.Quantity, nil
+func (s *Stock) Get(product_id string, variant string) error {
+	return db.Debug().Where("product_id = ? AND variant = ?", product_id, variant).First(s).Error
 }

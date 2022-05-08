@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"next/dtos"
 	"next/models"
@@ -9,57 +10,55 @@ import (
 type StockController struct {
 }
 
-/*
-	Function: CreateStock
-	Description: Creates a new stock
-	Input: stock: Stock
-	Output: Stock
-	{
-		"metadata":{
-			"color": "red",
-			"size": "small",
-		}
-		"quantity": 10,
-		"product_id": "f8f8f8f8-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
-	}
-**/
-func (s *StockController) Create(c *gin.Context) {
-
-	stock := models.Stock{}
-	if err := c.ShouldBindJSON(&stock); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	err := stock.Create()
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(201, dtos.Response{
-		Message: "Stock created successfully",
-		Data:    stock,
-	})
-}
-
 func (s *StockController) Get(c *gin.Context) {
 
-	stock := models.Stock{}
-	q := c.Request.URL.Query()
+	stock := &models.Stock{}
 
-	quantity, err := stock.Get(q)
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
+	productId, ok := c.GetQuery("product_id")
+	if ok != true {
+		c.JSON(400, gin.H{
+			"error": "product_id is required",
+		})
+	}
+	fmt.Printf("%v", productId)
+
+	variant, ok := c.GetQuery("variant")
+	if ok != true {
+		c.JSON(400, gin.H{
+			"error": "variant is required",
+		})
+	}
+
+	if err := stock.Get(productId, variant); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
 	}
 
 	c.JSON(200, dtos.Response{
-		Message: "Stock found successfully",
-		Data: struct {
-			Quantity int64 `json:"quantity"`
-		}{
-			Quantity: quantity,
-		},
+		Data:    stock,
+		Message: "success",
+	})
+}
+
+func (s *StockController) Update(c *gin.Context) {
+
+	stock := &models.Stock{}
+
+	if err := c.ShouldBindJSON(stock); err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	if err := stock.Update(); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	c.JSON(200, dtos.Response{
+		Data:    stock,
+		Message: "Update stock success",
 	})
 }
