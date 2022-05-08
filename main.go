@@ -132,7 +132,7 @@ func main() {
 
 		variant := new(controllers.VariantController)
 		api.GET("/variant", variant.Get)
-		api.POST("/variant", variant.Create)
+		//api.POST("/variant", variant.Create)
 
 		stock := new(controllers.StockController)
 		//api.GET("/stock", TokenAuthMiddleware(), stock.Get)

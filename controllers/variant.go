@@ -23,33 +23,33 @@ type VariantController struct {
 		"product_id": "f8f8f8f8-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
 	}
 **/
-func (s *VariantController) Create(c *gin.Context) {
-
-	variant := models.Variant{}
-
-	productId, exists := c.GetQuery("product_id")
-	if !exists {
-		c.JSON(400, gin.H{
-			"message": "product_id is required",
-		})
-	}
-	var variants []models.Variant
-	if err := c.ShouldBindJSON(&variants); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	variantsRes, err := variant.Create(productId, variants)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(201, dtos.Response{
-		Message: "Variant created successfully",
-		Data:    variantsRes,
-	})
-}
+//func (s *VariantController) Create(c *gin.Context) {
+//
+//	variant := models.Variant{}
+//
+//	productId, exists := c.GetQuery("product_id")
+//	if !exists {
+//		c.JSON(400, gin.H{
+//			"message": "product_id is required",
+//		})
+//	}
+//	var variants []models.Variant
+//	if err := c.ShouldBindJSON(&variants); err != nil {
+//		c.JSON(400, gin.H{"error": err.Error()})
+//		return
+//	}
+//
+//	variantsRes, err := variant.Create(productId, variants)
+//	if err != nil {
+//		c.JSON(400, gin.H{"error": err.Error()})
+//		return
+//	}
+//
+//	c.JSON(201, dtos.Response{
+//		Message: "Variant created successfully",
+//		Data:    variantsRes,
+//	})
+//}
 
 func (s *VariantController) Get(c *gin.Context) {
 
