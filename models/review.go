@@ -10,7 +10,8 @@ type Review struct {
 	BaseModel
 	UserId    uuid.UUID      `json:"user_id"`
 	User      *User          `json:"commenter"`
-	ProductId uuid.UUID      `json:"product_id"`
+	Product   *Product       `json:"-"`
+	ProductId uuid.UUID      `json:"product_id" gorm:"type:uuid"`
 	Rating    int64          `json:"rating" gorm:"default:0"`
 	Comment   string         `json:"comment"`
 	Images    pq.StringArray `gorm:"type:text" json:"images"`

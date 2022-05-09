@@ -27,12 +27,14 @@ func (s *StockController) Get(c *gin.Context) {
 		c.JSON(400, gin.H{
 			"error": "variant is required",
 		})
+		return
 	}
 
 	if err := stock.Get(productId, variant); err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(200, dtos.Response{

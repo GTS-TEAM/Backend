@@ -22,16 +22,17 @@ type ProductResponse struct {
 	Name        string                   `json:"name"`
 	Price       float64                  `json:"price"`
 	Description string                   `json:"description"`
-	Variants    []VariantProductResponse `json:"variants,omitempty"`
-	Images      pq.StringArray           `json:"images"`
-	Categories  []*Category              `json:"categories,omitempty"`
-	User        *User                    `json:"creator"`
+	Variants    []VariantProductResponse `json:"variants,omitempty" gorm:"-"`
+	Images      interface{}              `json:"images" gorm:"type:text"`
+	Specific    interface{}              `json:"specific,omitempty"`
+	Categories  string                   `json:"category,omitempty"`
+	User        *User                    `json:"creator" gorm:"-"`
 	Rating      float64                  `json:"rating"`
 }
 
 type ProductsResponse struct {
-	Products []ProductResponse `json:"products"`
-	Total    int64             `json:"total"`
+	Products []Product `json:"products"`
+	Total    int64     `json:"total"`
 }
 
 type Product struct {
@@ -41,11 +42,13 @@ type Product struct {
 	Description  string         `json:"description"`
 	Images       pq.StringArray `gorm:"type:text" json:"images"`
 	Categories   []*Category    `json:"categories,omitempty" gorm:"many2many:products_categories"`
-	CategoriesId []uuid.UUID    `gorm:"-" json:"categories_id"`
+	CategoriesId []uuid.UUID    `gorm:"-" json:"categories_id,omitempty"`
 	UserID       uuid.UUID      `gorm:"type:uuid" json:"-"`
 	User         *User          `json:"creator" gorm:"foreignkey:UserID"`
 	Specific     JSONB          `json:"specific" gorm:"type:jsonb;null"`
-	Variants     []Variant      `json:"variants" gorm:"-"`
+	Variants     []Variant      `json:"variants,omitempty" gorm:"migration"`
+	Rating       float64        `json:"rating" gorm:"migration"`
+	Category     string         `json:"category" gorm:"migration"`
 }
 
 func Combination(arr []Variant) []string {
@@ -112,47 +115,27 @@ func (p *Product) Create(userId string, dto *Product) error {
 	return nil
 }
 
-func (p *Product) GetAll(category string, paging Pagination) (data ProductsResponse, err error) {
+func (p *Product) GetAll(category string, paging Pagination) (data ProductsResponse, result []map[string]interface{}, err error) {
 
-	var products []Product
-
-	if category == "" {
-		err = db.Preload(clause.Associations).
-			Offset(paging.Page).
-			Limit(paging.Limit).
-			Order(paging.Sort).
-			Find(&products).
-			Count(&data.Total).Error
-		if err != nil {
-			utils.LogError("Product GetAll", err)
-		}
-
-		err = utils.BindStruct(&products, &data.Products)
-		if err != nil {
-			utils.LogError("Product GetAll", err)
-		}
-	} else {
-		db.Preload(clause.Associations).
-			Where("categories.id = ? and categories.deleted_at IS NULL ", category).
-			Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
-			Joins("LEFT JOIN categories ON categories.id = products_categories.category_id").
-			Where("products.deleted_at IS NULL").
-			Offset(paging.Page).Limit(paging.Limit).
-			Order("products." + paging.Sort).Find(&products).Count(&data.Total)
+	queryBuilder := db.Debug().Model(&Product{}).
+		Select("products.*,User,categories.name as category,avg(reviews.rating) as rating").
+		Group("products.id,\"User\".\"id\",categories.name").
+		Joins("User").
+		Joins("LEFT JOIN reviews ON products.id = reviews.product_id").
+		Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
+		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id")
+	if category != "" {
+		queryBuilder = queryBuilder.Where("categories.id = ? and categories.deleted_at IS NULL ", category)
 	}
-
-	err = utils.BindStruct(&products, &data.Products)
-
-	for index, _ := range data.Products {
-		err = db.Model(&Review{}).Select("AVG(rating) as rating").Where("product_id = ?", data.Products[index].ID).Scan(&data.Products[index].Rating).Error
-		if err != nil {
-			data.Products[index].Rating = float64(0)
-			err = nil
-		}
-	}
+	err = queryBuilder.Offset(paging.Page).
+		Limit(paging.Limit).
+		Order("products.created_at desc").
+		Find(&data.Products).
+		Count(&data.Total).
+		Error
 
 	if err != nil {
-		return ProductsResponse{}, err
+		return ProductsResponse{}, nil, err
 	}
 	return
 }

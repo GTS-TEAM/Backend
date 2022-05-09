@@ -116,11 +116,11 @@ func main() {
 		api.DELETE("/product/:id", TokenAuthMiddleware(), product.Delete)
 
 		api.GET("/product/reviews/:id", product.GetReviews)
-		api.POST("/product/reviews", product.CreateReviews)
+		api.POST("/product/reviews", TokenAuthMiddleware(), product.CreateReviews)
 
 		category := new(controllers.CategoryController)
 		api.GET("/category", category.GetAll)
-		api.POST("/category", category.Create)
+		api.POST("/category", TokenAuthMiddleware(), category.Create)
 		//api.POST("/category", category.Create)
 		//categoryGroup.PUT("/:id", category.Update)
 		//categoryGroup.DELETE("/:id", category.Delete)
@@ -145,7 +145,6 @@ func main() {
 
 	r.GET("/socket.io/", gin.WrapH(server))
 	r.POST("/socket.io/*any", gin.WrapH(server))
-	// Method 2 using server.ServerHTTP(Writer, Request) and also you can simply this by using gin.WrapH
 
 	r.Run(":8080")
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"next/dtos"
 	"next/models"
@@ -31,9 +32,10 @@ func (p *ProductController) GetProductsByCategory(c *gin.Context) {
 	paging := models.GeneratePaginationFromRequest(c)
 	product := models.Product{}
 	c.ShouldBindJSON(&product)
-	category := c.Param("id")
+	category := c.Query("category_id")
+	fmt.Printf("category: %s\n", category)
 
-	products, err := product.GetAll(category, paging)
+	data, _, err := product.GetAll(category, paging)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -42,7 +44,7 @@ func (p *ProductController) GetProductsByCategory(c *gin.Context) {
 
 	c.JSON(200, dtos.Response{
 		Message: "Success",
-		Data:    products,
+		Data:    data,
 	})
 }
 
