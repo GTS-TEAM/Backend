@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"next/dtos"
 	"next/models"
+	"next/utils"
 )
 
 type ProductController struct {
@@ -31,11 +32,12 @@ func (p *ProductController) Create(c *gin.Context) {
 func (p *ProductController) GetProductsByCategory(c *gin.Context) {
 	paging := models.GeneratePaginationFromRequest(c)
 	product := models.Product{}
-	c.ShouldBindJSON(&product)
 	category := c.Query("category_id")
-	fmt.Printf("category: %s\n", category)
+	filter := utils.GetProductFilter(c)
 
-	data, _, err := product.GetAll(category, paging)
+	fmt.Printf("Filter %+v\n", filter)
+
+	data, err := product.GetAll(category, filter, paging)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})

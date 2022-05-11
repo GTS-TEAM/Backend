@@ -4,6 +4,7 @@ import (
 	"github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm/clause"
+	"next/dtos"
 	"next/utils"
 )
 
@@ -115,7 +116,7 @@ func (p *Product) Create(userId string, dto *Product) error {
 	return nil
 }
 
-func (p *Product) GetAll(category string, paging Pagination) (data ProductsResponse, result []map[string]interface{}, err error) {
+func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagination) (data ProductsResponse, err error) {
 
 	queryBuilder := db.Debug().Model(&Product{}).
 		Select("products.*,User,categories.name as category,avg(reviews.rating) as rating").
@@ -127,6 +128,26 @@ func (p *Product) GetAll(category string, paging Pagination) (data ProductsRespo
 	if category != "" {
 		queryBuilder = queryBuilder.Where("categories.id = ? and categories.deleted_at IS NULL ", category)
 	}
+
+	if filter.MinPrice != 0 {
+		queryBuilder = queryBuilder.Where("products.price > ?", filter.MinPrice)
+	}
+
+	if filter.MaxPrice != 0 {
+		queryBuilder = queryBuilder.Where("products.price < ?", filter.MaxPrice)
+	}
+
+	if filter.MinRating != 0 {
+		queryBuilder = queryBuilder.Having("avg(reviews.rating) > ?", filter.MinRating)
+	}
+
+	//if len(filter.Variants) > 0 {
+	//	query := ""
+	//	for _, variant := range filter.Variants {
+	//		query += "variants.key = '" + variant.Key + "' AND variants.value = '" + variant.Value + "' OR "
+	//	}
+	//}
+
 	err = queryBuilder.Offset(paging.Page).
 		Limit(paging.Limit).
 		Order("products.created_at desc").
@@ -135,7 +156,7 @@ func (p *Product) GetAll(category string, paging Pagination) (data ProductsRespo
 		Error
 
 	if err != nil {
-		return ProductsResponse{}, nil, err
+		return ProductsResponse{}, err
 	}
 	return
 }

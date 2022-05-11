@@ -7,10 +7,9 @@
     <list default="true" id="73074046-4887-4826-b781-e3530d536d13" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/product.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/product.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/stock.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/stock.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtos/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/dtos/common.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/product.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/product.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/review.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/review.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/helpers.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/helpers.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +51,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/3lang/Projects/Ecommerce/e-commerce-api&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/3lang/Projects/IOT&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
 }</component>
