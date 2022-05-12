@@ -2,12 +2,6 @@ package models
 
 import uuid "github.com/satori/go.uuid"
 
-type CategoryResponse struct {
-	Categories []Category `json:"categories"`
-	Children   []Category `json:"children"`
-	Total      int64      `json:"total"`
-}
-
 type Category struct {
 	BaseModel
 	Name        string     `json:"name"`
@@ -21,22 +15,15 @@ func (c *Category) TableName() string {
 	return "categories"
 }
 
-func (c *Category) GetAll(paging Pagination) (result CategoryResponse, err error) {
-	//if err = db.Offset(paging.Page).
-	//	Limit(paging.Limit).
-	//	Order("categories." + paging.Sort).
-	//	Find(&result.Categories).Count(&result.Total).Error; err != nil {
-	//	return result, err
-	//}
+func (c *Category) GetAll(paging Pagination) (result []Category, err error) {
 
-	// get parent categories and children categories
 	if err = db.
 		Preload("Children").
 		Where("parent_id is null").
 		Limit(paging.Limit).
 		Offset(paging.Page).
 		Order("categories." + paging.Sort).
-		Find(&result.Categories).Error; err != nil {
+		Find(&result).Error; err != nil {
 		return result, err
 	}
 

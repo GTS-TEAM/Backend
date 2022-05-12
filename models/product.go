@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm/clause"
@@ -24,10 +25,10 @@ type ProductResponse struct {
 	Price       float64                  `json:"price"`
 	Description string                   `json:"description"`
 	Variants    []VariantProductResponse `json:"variants,omitempty" gorm:"-"`
-	Images      interface{}              `json:"images" gorm:"type:text"`
+	Images      pq.StringArray           `json:"images" gorm:"type:text"`
 	Specific    interface{}              `json:"specific,omitempty"`
 	Categories  string                   `json:"category,omitempty"`
-	User        *User                    `json:"creator" gorm:"-"`
+	User        *User                    `json:"creator"`
 	Rating      float64                  `json:"rating"`
 }
 
@@ -38,18 +39,32 @@ type ProductsResponse struct {
 
 type Product struct {
 	BaseModel
+	Name         string                   `json:"name"`
+	Price        float64                  `json:"price"`
+	Description  string                   `json:"description"`
+	Images       pq.StringArray           `gorm:"type:text" json:"images"`
+	Categories   []*Category              `json:"categories,omitempty" gorm:"many2many:products_categories"`
+	CategoriesId []uuid.UUID              `gorm:"-" json:"categories_id,omitempty"`
+	UserID       uuid.UUID                `gorm:"type:uuid;column:creator_id" json:"-"`
+	User         *User                    `json:"creator" gorm:"foreignkey:UserID"`
+	Specific     JSONB                    `json:"specific" gorm:"type:jsonb;null"`
+	Variants     []VariantProductResponse `json:"variants,omitempty" gorm:"-"`
+	Rating       float64                  `json:"rating" gorm:"-:migration;->"`
+	Category     string                   `json:"category" gorm:"-:migration;->"`
+	Stock        int64                    `json:"stock" gorm:"-:migration;->"`
+}
+
+type CreateProduct struct {
+	BaseModel
 	Name         string         `json:"name"`
 	Price        float64        `json:"price"`
 	Description  string         `json:"description"`
 	Images       pq.StringArray `gorm:"type:text" json:"images"`
 	Categories   []*Category    `json:"categories,omitempty" gorm:"many2many:products_categories"`
 	CategoriesId []uuid.UUID    `gorm:"-" json:"categories_id,omitempty"`
-	UserID       uuid.UUID      `gorm:"type:uuid" json:"-"`
-	User         *User          `json:"creator" gorm:"foreignkey:UserID"`
 	Specific     JSONB          `json:"specific" gorm:"type:jsonb;null"`
 	Variants     []Variant      `json:"variants,omitempty" gorm:"migration"`
-	Rating       float64        `json:"rating" gorm:"migration"`
-	Category     string         `json:"category" gorm:"migration"`
+	UserID       uuid.UUID      `gorm:"type:uuid" json:"-"`
 }
 
 func Combination(arr []Variant) []string {
@@ -67,18 +82,25 @@ func Combination(arr []Variant) []string {
 	return result
 }
 
-func (p *Product) Create(userId string, dto *Product) error {
+func (p *Product) Create(userId string, dto *CreateProduct) error {
 
-	if err := db.Model(Category{}).Where("id IN (?)", dto.CategoriesId).Find(&dto.Categories).Error; err != nil {
+	if err := db.Model(Category{}).Where("id IN (?)", dto.CategoriesId).Find(&p.Categories).Error; err != nil {
 		return err
 	}
 
 	if err := db.Model(User{}).Where("id = ?", userId).First(&User{}).Error; err != nil {
 		return err
 	}
-	dto.UserID = uuid.FromStringOrNil(userId)
+	utils.BindStruct(dto, p)
+	p.UserID = uuid.FromStringOrNil(userId)
+	//if err != nil {
+	//	panic(err)
+	//	return err
+	//}
 
-	if err := db.Omit("Categories.*").Create(&dto).Error; err != nil {
+	p.Category = p.Categories[0].Name
+
+	if err := db.Omit("Categories.*,Variants.*,").Create(&p).Error; err != nil {
 		utils.LogError("Product Create", err)
 		return err
 	}
@@ -92,7 +114,7 @@ func (p *Product) Create(userId string, dto *Product) error {
 		variants = append(variants, Variant{
 			Key:       variant.Key,
 			Values:    variant.Values,
-			ProductID: dto.ID,
+			ProductID: p.ID,
 		})
 	}
 
@@ -125,8 +147,9 @@ func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagi
 		Joins("LEFT JOIN reviews ON products.id = reviews.product_id").
 		Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
 		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id")
+
 	if category != "" {
-		queryBuilder = queryBuilder.Where("categories.id = ? and categories.deleted_at IS NULL ", category)
+		queryBuilder = queryBuilder.Where("categories.id = ?", category)
 	}
 
 	if filter.MinPrice != 0 {
@@ -161,16 +184,20 @@ func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagi
 	return
 }
 
-func (p *Product) GetByID(id string) (data ProductResponse, err error) {
-	var product Product
+func (p *Product) GetByID(id string) (data Product, err error) {
 
-	err = db.Model(&Product{}).Preload(clause.Associations).Where("id = ?", id).First(&product).Error
+	fmt.Println("ID: ", id)
 
-	if err != nil {
-		utils.LogError("Product GetByID", err)
-		return
-	}
-	err = utils.BindStruct(&product, &data)
+	err = db.Debug().Model(&Product{}).
+		Select("products.*,User,categories.name as category,avg(reviews.rating) as rating").
+		Group("products.id,\"User\".\"id\",categories.name").
+		Joins("User").
+		Joins("LEFT JOIN reviews ON products.id = reviews.product_id").
+		Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
+		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id").
+		First(&data, "products.id = ?", id).
+		Error
+
 	if err != nil {
 		utils.LogError("Product GetByID", err)
 		return

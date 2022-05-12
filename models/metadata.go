@@ -38,7 +38,7 @@ func (m *Metadata) Delete(id string) error {
 }
 
 func (m *Metadata) GetAll() (metadata []Metadata, err error) {
-	if err = db.Debug().Where("deleted_at IS NULL").Find(&metadata).Error; err != nil {
+	if err = db.Debug().Find(&metadata).Error; err != nil {
 		utils.LogError("Get all metadata", err)
 		return
 	}

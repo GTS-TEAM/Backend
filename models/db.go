@@ -33,10 +33,14 @@ func Init() {
 		return
 	}
 	db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";")
-	if err := db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`).Error; err != nil {
+	if err = db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`).Error; err != nil {
 		fmt.Printf("error while creating MyDb extension 'uuid-ossp': %s\n", err)
 	}
-	err = db.AutoMigrate(&User{}, &Token{}, &Product{}, &Category{}, &Review{}, &Metadata{}, &Variant{}, &Stock{})
+
+	if os.Getenv("ENV") == "dev" {
+		err = db.AutoMigrate(&User{}, &Token{}, &Product{}, &Category{}, &Review{}, &Metadata{}, &Variant{}, &Stock{})
+	}
+
 	if err != nil {
 		log.Println(err)
 	}

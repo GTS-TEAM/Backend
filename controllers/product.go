@@ -15,13 +15,14 @@ func (p *ProductController) Create(c *gin.Context) {
 	userId := getUserID(c)
 
 	product := models.Product{}
+	productDto := models.CreateProduct{}
 
-	if err := c.ShouldBindJSON(&product); err != nil {
+	if err := c.ShouldBindJSON(&productDto); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := product.Create(userId, &product)
+	err := product.Create(userId, &productDto)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
