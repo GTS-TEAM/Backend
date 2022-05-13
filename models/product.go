@@ -173,12 +173,12 @@ func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagi
 	//	}
 	//}
 
-	err = queryBuilder.Offset(paging.Page).
+	err = queryBuilder.
+		Count(&data.Total).
+		Offset(paging.Page).
 		Limit(paging.Limit).
 		Order("products.created_at desc").
-		Find(&data.Products).
-		Count(&data.Total).
-		Error
+		Find(&data.Products).Error
 
 	if err != nil {
 		return ProductsResponse{}, err
