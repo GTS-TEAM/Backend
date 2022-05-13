@@ -69,7 +69,7 @@ func (t *Token) TokenValid(c *gin.Context) {
 	userId, err := t.VerifyToken(token)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": "Invalid token",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -95,8 +95,8 @@ func (t *Token) ExtractToken(r *http.Request) string {
 }
 
 func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
-	accessToken, err := t.GenerateToken(UserID, AccessTokenType, time.Now().Add(time.Minute*1).Unix())
-	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType, time.Now().Add(time.Minute*2).Unix())
+	accessToken, err := t.GenerateToken(UserID, AccessTokenType, time.Now().Add(time.Hour*24*30).Unix())
+	refreshToken, err := t.GenerateToken(UserID, RefreshTokenType, time.Now().Add(time.Hour*24*30).Unix())
 
 	db.Create(&Token{
 		Token:  refreshToken,

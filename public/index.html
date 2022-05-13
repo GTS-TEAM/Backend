@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>Websockets Chat</title>
+    <script type="text/javascript" src="https://cdn.socket.io/socket.io-2.3.0.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1 col-sm-14">
+            <h1 class="text-center">Ecommerce Logs</h1>
+            <br>
+            <div id="status"></div>
+            <div id="chat">
+                <br>
+                <div id="messages" class="card-block"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const messages = document.querySelector('#messages')
+
+    const socket = io("ws://3.0.102.186",{
+        path: "/socket.io",
+        transports: ['websocket']
+    })
+
+    socket.on('connect', () => {
+        console.log('connected')
+    })
+
+    socket.on('connect', () => {
+        socket.on('some', (message) => {
+            console.log(message)
+            insertMessage({content:message})
+        })
+    })
+
+    /**
+     * Insert a message into the UI
+     * @param {Message that will be displayed in the UI} messageObj
+     */
+    function insertMessage(messageObj) {
+        // Create a div object which will hold the message
+        const message = document.createElement('div')
+
+        // Set the attribute of the message div
+        message.setAttribute('class', 'chat-message')
+        console.log(" content: " +" messageObj.content")
+        message.textContent = messageObj.content
+
+        // Append the message to our chat div
+        messages.appendChild(message)
+
+        // Insert the message as the first message of our chat
+        messages.insertBefore(message, messages.firstChild)
+    }
+
+</script>
+</body>
+</html>
