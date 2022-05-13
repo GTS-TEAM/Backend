@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/hpcloud/tail"
+	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
 	"io"
 	"log"
@@ -49,13 +50,13 @@ func RequestIDMiddleware() gin.HandlerFunc {
 
 func main() {
 
-	//err := godotenv.Load(".env")
-	//if err != nil {
-	//	log.Fatal("error: failed to load the env file")
-	//}
-
 	if os.Getenv("ENV") == "PRODUCTION" {
 		gin.SetMode(gin.ReleaseMode)
+	} else {
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("error: failed to load the env file")
+		}
 	}
 	os.Mkdir("logs", 0777)
 	logFile, _ := os.Create("logs/server.log")

@@ -21,7 +21,7 @@ var (
 //Init ...
 func Init() {
 
-	dbinfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+	dbinfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=require",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASS"),
@@ -37,7 +37,7 @@ func Init() {
 		fmt.Printf("error while creating MyDb extension 'uuid-ossp': %s\n", err)
 	}
 
-	if os.Getenv("ENV") == "1" {
+	if os.Getenv("ENV") == "dev" {
 		err = db.AutoMigrate(&User{}, &Token{}, &Product{}, &Category{}, &Review{}, &Metadata{}, &Variant{}, &Stock{})
 	}
 
