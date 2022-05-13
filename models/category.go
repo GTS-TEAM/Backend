@@ -1,6 +1,9 @@
 package models
 
-import uuid "github.com/satori/go.uuid"
+import (
+	uuid "github.com/satori/go.uuid"
+	"next/utils"
+)
 
 type Category struct {
 	BaseModel
@@ -38,4 +41,12 @@ func (c *Category) GetById(id int) (*Category, error) {
 
 func (c *Category) Create() error {
 	return db.Debug().Create(&c).Error
+}
+
+func (c *Category) GetCountProductOfCategory(id string) (count int64, err error) {
+	err = db.Table("products_categories").Where("category_id = ?", id).Count(&count).Error
+	if err != nil {
+		utils.LogError("GetCountProductOfCategory", err)
+	}
+	return
 }

@@ -122,13 +122,15 @@ func (p *Product) Create(userId string, dto *CreateProduct) error {
 
 	for _, combinations := range Combination(dto.Variants) {
 		stock = append(stock, Stock{
-			ProductID: dto.ID,
+			ProductID: p.ID,
 			Variant:   combinations,
 		})
 	}
 
 	if err := db.Create(&variants).Error; err != nil {
+		utils.LogError("Create variants", err)
 		panic(err)
+		return err
 	}
 
 	if err := db.Create(&stock).Error; err != nil {

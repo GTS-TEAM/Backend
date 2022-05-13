@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/hpcloud/tail"
-	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
 	"io"
 	"log"
@@ -50,10 +49,10 @@ func RequestIDMiddleware() gin.HandlerFunc {
 
 func main() {
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("error: failed to load the env file")
-	}
+	//err := godotenv.Load(".env")
+	//if err != nil {
+	//	log.Fatal("error: failed to load the env file")
+	//}
 
 	if os.Getenv("ENV") == "PRODUCTION" {
 		gin.SetMode(gin.ReleaseMode)
@@ -63,9 +62,7 @@ func main() {
 	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
 
 	server := socketio.NewServer(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
 		go func() {
@@ -120,6 +117,8 @@ func main() {
 
 		category := new(controllers.CategoryController)
 		api.GET("/category", category.GetAll)
+		api.GET("/category/count-products/:id", category.GetCountProductOfCategory)
+
 		api.POST("/category", TokenAuthMiddleware(), category.Create)
 		//api.POST("/category", category.Create)
 		//categoryGroup.PUT("/:id", category.Update)

@@ -37,7 +37,7 @@ func Init() {
 		fmt.Printf("error while creating MyDb extension 'uuid-ossp': %s\n", err)
 	}
 
-	if os.Getenv("ENV") == "dev" {
+	if os.Getenv("ENV") == "1" {
 		err = db.AutoMigrate(&User{}, &Token{}, &Product{}, &Category{}, &Review{}, &Metadata{}, &Variant{}, &Stock{})
 	}
 
