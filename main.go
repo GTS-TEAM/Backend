@@ -94,6 +94,13 @@ func main() {
 
 	api := r.Group("/api")
 	{
+		api.GET("/", func(c *gin.Context) {
+			fmt.Printf("Header: %v\n", c.Request.Header)
+			c.JSON(200, gin.H{
+				"message": c.Request.Header,
+			})
+		})
+
 		auth := new(controllers.AuthController)
 		api.POST("/auth/login", auth.Login)
 		api.POST("/auth/register", auth.Register)
