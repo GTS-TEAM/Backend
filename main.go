@@ -63,6 +63,7 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/", func(c *gin.Context) {
+			fmt.Printf("Header %v\n", c.Request.Header)
 			c.JSON(200, gin.H{
 				"message": c.Request.Header,
 			})

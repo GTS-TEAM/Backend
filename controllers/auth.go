@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"next/dtos"
@@ -67,6 +68,7 @@ func (auth *AuthController) RefreshToken(c *gin.Context) {
 }
 
 func (auth *AuthController) Authorize(c *gin.Context) {
+	fmt.Printf("Authorize start \n")
 	t := &models.Token{}
 	token := t.ExtractToken(c.Request)
 
@@ -85,4 +87,5 @@ func (auth *AuthController) Authorize(c *gin.Context) {
 	}
 	c.Request.Header.Add("x-user-id", userId.String())
 	c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: nil})
+	fmt.Printf("Authorize end")
 }
