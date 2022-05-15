@@ -58,7 +58,7 @@ func (u *User) Register(dto dtos.RegisterForm) (err error) {
 		Name:     dto.Name,
 		Email:    &dto.Email,
 		Password: dto.Password,
-		Role:     "user",
+		Role:     dto.Role,
 	}
 
 	if err := db.Create(&user).Error; err != nil {

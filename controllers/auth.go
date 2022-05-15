@@ -65,3 +65,24 @@ func (auth *AuthController) RefreshToken(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: res})
 }
+
+func (auth *AuthController) Authorize(c *gin.Context) {
+	t := &models.Token{}
+	token := t.ExtractToken(c.Request)
+
+	userId, err := t.VerifyToken(token)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err != nil {
+		//Token does not exists in Redis (User logged out or expired)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
+	}
+	c.Request.Header.Add("x-user-id", userId.String())
+	c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: nil})
+}

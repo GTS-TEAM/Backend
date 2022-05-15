@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
+	"next/utils"
 	"strings"
 	"time"
 )
@@ -21,6 +22,10 @@ type Token struct {
 type AuthToken struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
+}
+
+type AuthorizationResponse struct {
+	XUserID uuid.UUID `json:"x-user-id"`
 }
 
 type JwtCustomClaim struct {
@@ -76,12 +81,13 @@ func (t *Token) TokenValid(c *gin.Context) {
 
 	if err != nil {
 		//Token does not exists in Redis (User logged out or expired)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Please login first"})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}
 
-	//To be called from GetUserID()
-	c.Set("userID", userId)
+	c.JSON(http.StatusOK, AuthorizationResponse{
+		XUserID: userId,
+	})
 }
 
 func (t *Token) ExtractToken(r *http.Request) string {
@@ -126,8 +132,21 @@ func (t *Token) VerifyToken(token string) (uuid.UUID, error) {
 		return uuid.Nil, err
 	}
 
-	userId := jwtPayload.Claims.(jwt.MapClaims)["user_id"].(string)
-	return uuid.FromString(userId)
+	jwtClaims := JwtCustomClaim{}
+	err = utils.BindStruct(jwtPayload.Claims.(jwt.MapClaims), &jwtClaims)
+	if err != nil {
+		fmt.Printf("Error Bind struct: %v\n", err)
+	}
+
+	if jwtClaims.UserID == uuid.Nil {
+		return uuid.Nil, errors.New("Token is not valid")
+	}
+
+	if !jwtClaims.IsValid {
+		return uuid.Nil, errors.New("Token is not valid")
+	}
+
+	return jwtClaims.UserID, nil
 }
 
 func (t *Token) ValidateTokenRefreshToken(refreshToken string) (*AuthToken, error) {

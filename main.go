@@ -8,45 +8,13 @@ import (
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/hpcloud/tail"
 	"github.com/joho/godotenv"
-	uuid "github.com/satori/go.uuid"
 	"io"
 	"log"
 	"next/controllers"
+	"next/middlewares"
 	"next/models"
 	"os"
 )
-
-func TokenAuthMiddleware() gin.HandlerFunc {
-	t := &models.Token{}
-	return func(c *gin.Context) {
-		t.TokenValid(c)
-		c.Next()
-	}
-}
-
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
-	}
-}
-
-func RequestIDMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		uu := uuid.NewV4()
-		c.Writer.Header().Set("X-Request-Id", uu.String())
-		c.Next()
-	}
-}
 
 func main() {
 
@@ -84,18 +52,17 @@ func main() {
 	r := gin.Default()
 	r.RedirectTrailingSlash = true
 	r.Use(static.Serve("/", static.LocalFile("./public", true)))
-	r.Use(CORSMiddleware())
-	r.Use(RequestIDMiddleware())
+	r.Use(middlewares.CORSMiddleware())
+	r.Use(middlewares.RequestIDMiddleware())
 	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
+	r.Use(gin.Recovery())
 
 	models.Init()
 
 	api := r.Group("/api")
 	{
 		api.GET("/", func(c *gin.Context) {
-			fmt.Printf("Header: %v\n", c.Request.Header)
 			c.JSON(200, gin.H{
 				"message": c.Request.Header,
 			})
@@ -105,9 +72,10 @@ func main() {
 		api.POST("/auth/login", auth.Login)
 		api.POST("/auth/register", auth.Register)
 		api.POST("/auth/refresh-token", auth.RefreshToken)
+		api.GET("/auth/authorize", auth.Authorize)
 
 		user := new(controllers.UserController)
-		api.GET("/user", TokenAuthMiddleware(), user.Get)
+		api.GET("/user", user.Get)
 		//userGroup.GET("/", user.GetProductsByCategory)
 		//userGroup.GET("/:id", user.Gets)
 		//userGroup.POST("/", user.Create)
@@ -116,18 +84,18 @@ func main() {
 		product := new(controllers.ProductController)
 		api.GET("/product", product.GetProductsByCategory)
 		api.GET("/product/:id", product.GetProductById)
-		api.POST("/product", TokenAuthMiddleware(), product.Create)
-		api.PUT("/product/:id", TokenAuthMiddleware(), product.Update)
-		api.DELETE("/product/:id", TokenAuthMiddleware(), product.Delete)
+		api.POST("/product", product.Create)
+		api.PUT("/product/:id", product.Update)
+		api.DELETE("/product/:id", product.Delete)
 
 		api.GET("/product/reviews/:id", product.GetReviews)
-		api.POST("/product/reviews", TokenAuthMiddleware(), product.CreateReviews)
+		api.POST("/product/reviews", product.CreateReviews)
 
 		category := new(controllers.CategoryController)
 		api.GET("/category", category.GetAll)
 		api.GET("/category/count-products/:id", category.GetCountProductOfCategory)
 
-		api.POST("/category", TokenAuthMiddleware(), category.Create)
+		api.POST("/category", category.Create)
 		//api.POST("/category", category.Create)
 		//categoryGroup.PUT("/:id", category.Update)
 		//categoryGroup.DELETE("/:id", category.Delete)
@@ -142,8 +110,8 @@ func main() {
 		//api.POST("/variant", variant.Create)
 
 		stock := new(controllers.StockController)
-		//api.GET("/stock", TokenAuthMiddleware(), stock.Get)
-		api.PATCH("/stock", TokenAuthMiddleware(), stock.Update)
+		//api.GET("/stock", (), stock.Get)
+		api.PATCH("/stock", stock.Update)
 		api.GET("/stock", stock.Get)
 	}
 
