@@ -12,6 +12,7 @@ type ProductController struct {
 }
 
 func (p *ProductController) Create(c *gin.Context) {
+
 	userId := getUserID(c)
 
 	product := models.Product{}

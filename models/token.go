@@ -71,7 +71,7 @@ func (t *Token) TokenValid(c *gin.Context) {
 
 	token := t.ExtractToken(c.Request)
 
-	userId, err := t.VerifyToken(token)
+	jwtClaims, err := t.VerifyToken(token)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
@@ -85,8 +85,9 @@ func (t *Token) TokenValid(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, AuthorizationResponse{
-		XUserID: userId,
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Token is valid",
+		"claims":  jwtClaims,
 	})
 }
 
@@ -120,7 +121,7 @@ func (t *Token) GenerateAuthToken(UserID uuid.UUID) (*AuthToken, error) {
 	}, nil
 }
 
-func (t *Token) VerifyToken(token string) (uuid.UUID, error) {
+func (t *Token) VerifyToken(token string) (jwtClaims JwtCustomClaim, err error) {
 	jwtPayload, err := jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
 		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method %v ", t_.Header["alg"])
@@ -129,37 +130,36 @@ func (t *Token) VerifyToken(token string) (uuid.UUID, error) {
 	})
 
 	if err != nil {
-		return uuid.Nil, err
+		return jwtClaims, err
 	}
 
-	jwtClaims := JwtCustomClaim{}
 	err = utils.BindStruct(jwtPayload.Claims.(jwt.MapClaims), &jwtClaims)
 	if err != nil {
 		fmt.Printf("Error Bind struct: %v\n", err)
 	}
 
 	if jwtClaims.UserID == uuid.Nil {
-		return uuid.Nil, errors.New("Token is not valid")
+		return jwtClaims, errors.New("Invalid Token")
 	}
 
 	if !jwtClaims.IsValid {
-		return uuid.Nil, errors.New("Token is not valid")
+		return jwtClaims, errors.New("Invalid Token")
 	}
 
-	return jwtClaims.UserID, nil
+	return jwtClaims, nil
 }
 
 func (t *Token) ValidateTokenRefreshToken(refreshToken string) (*AuthToken, error) {
-	userId, err := t.VerifyToken(refreshToken)
+	jwtClaims, err := t.VerifyToken(refreshToken)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = db.First(&Token{}, "token = ? AND user_id = ?", refreshToken, userId).Error; err != nil {
+	if err = db.First(&Token{}, "token = ? AND user_id = ?", refreshToken, jwtClaims.UserID).Error; err != nil {
 		return nil, errors.New("Invalid Token")
 	}
 
-	return t.GenerateAuthToken(userId)
+	return t.GenerateAuthToken(jwtClaims.UserID)
 }
 
 func getSecretKey() []byte {

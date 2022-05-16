@@ -1,12 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-contrib/gzip"
 	static "github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	socketio "github.com/googollee/go-socket.io"
-	"github.com/hpcloud/tail"
 	"github.com/joho/godotenv"
 	"io"
 	"log"
@@ -30,24 +27,24 @@ func main() {
 	logFile, _ := os.Create("logs/server.log")
 	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
 
-	server := socketio.NewServer(nil)
-
-	server.OnConnect("/", func(s socketio.Conn) error {
-		s.SetContext("")
-		go func() {
-			t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
-			if err != nil {
-				log.Fatal(err)
-			}
-			for line := range t.Lines {
-				server.BroadcastToNamespace("/", "some", line.Text)
-			}
-		}()
-		return nil
-	})
-	server.OnDisconnect("/", func(s socketio.Conn, msg string) {
-		fmt.Println("Somebody just close the connection ")
-	})
+	//server := socketio.NewServer(nil)
+	//
+	//server.OnConnect("/", func(s socketio.Conn) error {
+	//	s.SetContext("")
+	//	go func() {
+	//		t, err := tail.TailFile("logs/server.log", tail.Config{Follow: true})
+	//		if err != nil {
+	//			log.Fatal(err)
+	//		}
+	//		for line := range t.Lines {
+	//			server.BroadcastToNamespace("/", "some", line.Text)
+	//		}
+	//	}()
+	//	return nil
+	//})
+	//server.OnDisconnect("/", func(s socketio.Conn, msg string) {
+	//	fmt.Println("Somebody just close the connection ")
+	//})
 
 	r := gin.Default()
 	r.RedirectTrailingSlash = true
@@ -56,24 +53,17 @@ func main() {
 	r.Use(middlewares.RequestIDMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	r.Use(gin.Recovery())
+	//r.Use(gin.Recovery())
 
 	models.Init()
 
 	api := r.Group("/api")
 	{
-		api.GET("/", func(c *gin.Context) {
-			fmt.Printf("Header %v\n", c.Request.Header)
-			c.JSON(200, gin.H{
-				"message": c.Request.Header,
-			})
-		})
-
 		auth := new(controllers.AuthController)
+		api.GET("/authorize", auth.Authorize)
 		api.POST("/auth/login", auth.Login)
 		api.POST("/auth/register", auth.Register)
 		api.POST("/auth/refresh-token", auth.RefreshToken)
-		api.GET("/auth/authorize", auth.Authorize)
 
 		user := new(controllers.UserController)
 		api.GET("/user", user.Get)
@@ -97,7 +87,6 @@ func main() {
 		api.GET("/category/count-products/:id", category.GetCountProductOfCategory)
 
 		api.POST("/category", category.Create)
-		//api.POST("/category", category.Create)
 		//categoryGroup.PUT("/:id", category.Update)
 		//categoryGroup.DELETE("/:id", category.Delete)
 
@@ -116,11 +105,11 @@ func main() {
 		api.GET("/stock", stock.Get)
 	}
 
-	go server.Serve()
-	defer server.Close()
-
-	r.GET("/socket.io/", gin.WrapH(server))
-	r.POST("/socket.io/*any", gin.WrapH(server))
+	//go server.Serve()
+	//defer server.Close()
+	//
+	//r.GET("/socket.io/", gin.WrapH(server))
+	//r.POST("/socket.io/*any", gin.WrapH(server))
 
 	r.Run(":8080")
 }

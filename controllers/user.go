@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	uuid "github.com/satori/go.uuid"
 	"next/models"
 )
 
@@ -11,7 +10,8 @@ type UserController struct {
 
 func getUserID(c *gin.Context) (userID string) {
 	//MustGet returns the value for the given key if it exists, otherwise it panics.
-	return c.MustGet("userID").(uuid.UUID).String()
+	// get x-user-id from header
+	return c.Request.Header.Get("x-user-id")
 }
 
 func (u *UserController) Get(c *gin.Context) {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"next/dtos"
 	"next/utils"
@@ -84,60 +85,58 @@ func Combination(arr []Variant) []string {
 
 func (p *Product) Create(userId string, dto *CreateProduct) error {
 
-	if err := db.Model(Category{}).Where("id IN (?)", dto.CategoriesId).Find(&p.Categories).Error; err != nil {
-		return err
-	}
+	return db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(Category{}).Where("id IN (?)", dto.CategoriesId).Find(&p.Categories).Error; err != nil {
+			return err
+		}
 
-	if err := db.Model(User{}).Where("id = ?", userId).First(&User{}).Error; err != nil {
-		return err
-	}
-	utils.BindStruct(dto, p)
-	p.UserID = uuid.FromStringOrNil(userId)
-	//if err != nil {
-	//	panic(err)
-	//	return err
-	//}
+		if err := tx.Model(User{}).Where("id = ?", userId).First(&User{}).Error; err != nil {
+			return err
+		}
+		utils.BindStruct(dto, p)
+		p.UserID = uuid.FromStringOrNil(userId)
 
-	p.Category = p.Categories[0].Name
+		p.Category = p.Categories[0].Name
 
-	if err := db.Omit("Categories.*,Variants.*,").Create(&p).Error; err != nil {
-		utils.LogError("Product Create", err)
-		return err
-	}
+		if err := tx.Omit("Categories.*,Variants.*,").Create(&p).Error; err != nil {
+			utils.LogError("Product Create", err)
+			return err
+		}
 
-	var variants []Variant
-	var stock []Stock
+		var variants []Variant
+		var stock []Stock
 
-	// TODO : Use S in Solid
+		// TODO : Use S in Solid
 
-	for _, variant := range dto.Variants {
-		variants = append(variants, Variant{
-			Key:       variant.Key,
-			Values:    variant.Values,
-			ProductID: p.ID,
-		})
-	}
+		for _, variant := range dto.Variants {
+			variants = append(variants, Variant{
+				Key:       variant.Key,
+				Values:    variant.Values,
+				ProductID: p.ID,
+			})
+		}
 
-	// TODO: Use S
+		// TODO: Use S
 
-	for _, combinations := range Combination(dto.Variants) {
-		stock = append(stock, Stock{
-			ProductID: p.ID,
-			Variant:   combinations,
-		})
-	}
+		for _, combinations := range Combination(dto.Variants) {
+			stock = append(stock, Stock{
+				ProductID: p.ID,
+				Variant:   combinations,
+			})
+		}
 
-	if err := db.Create(&variants).Error; err != nil {
-		utils.LogError("Create variants", err)
-		panic(err)
-		return err
-	}
+		if err := tx.Create(&variants).Error; err != nil {
+			utils.LogError("Create variants", err)
+			panic(err)
+			return err
+		}
 
-	if err := db.Create(&stock).Error; err != nil {
-		panic(err)
-	}
+		if err := tx.Create(&stock).Error; err != nil {
+			panic(err)
+		}
 
-	return nil
+		return nil
+	})
 }
 
 func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagination) (data ProductsResponse, err error) {
