@@ -7,7 +7,7 @@ import (
 
 type Variant struct {
 	BaseModel
-	Product   Product        `json:"-"`
+	Product   Product        `json:"-" gorm:"foreignkey:ProductID;constraint:OnDelete:CASCADE"`
 	ProductID uuid.UUID      `json:"-"`
 	Key       string         `json:"key"`
 	Values    pq.StringArray `json:"values" gorm:"type:text"`

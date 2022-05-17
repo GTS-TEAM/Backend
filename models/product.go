@@ -44,12 +44,13 @@ type Product struct {
 	Price        float64                  `json:"price"`
 	Description  string                   `json:"description"`
 	Images       pq.StringArray           `gorm:"type:text" json:"images"`
-	Categories   []*Category              `json:"categories,omitempty" gorm:"many2many:products_categories"`
+	Categories   []*Category              `json:"categories,omitempty" gorm:"many2many:products_categories;constraint:OnDelete:CASCADE"`
 	CategoriesId []uuid.UUID              `gorm:"-" json:"categories_id,omitempty"`
 	UserID       uuid.UUID                `gorm:"type:uuid;column:creator_id" json:"-"`
 	User         *User                    `json:"creator" gorm:"foreignkey:UserID"`
 	Specific     JSONB                    `json:"specific" gorm:"type:jsonb;null"`
 	Variants     []VariantProductResponse `json:"variants,omitempty" gorm:"-"`
+	Variant      []Variant                `json:"-" gorm:"constraint:OnDelete:CASCADE"`
 	Rating       float64                  `json:"rating" gorm:"-:migration;->"`
 	Category     string                   `json:"category" gorm:"-:migration;->"`
 	Stock        int64                    `json:"stock" gorm:"-:migration;->"`
@@ -259,7 +260,9 @@ func (p *Product) Update(id string, dto *Product) (err error) {
 }
 
 func (p *Product) Delete(id string) (err error) {
-	err = db.Where("id = ?", id).Delete(&Product{}).Error
+	err = db.Model(&Product{}).
+		Select(clause.Associations).
+		Delete(&Product{BaseModel: BaseModel{ID: uuid.FromStringOrNil(id)}}).Error
 	if err != nil {
 		utils.LogError("Product Delete", err)
 		return

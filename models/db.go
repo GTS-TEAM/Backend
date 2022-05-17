@@ -69,7 +69,7 @@ func ConnectDB(dataSourceName string) error {
 		})
 		if err != nil {
 			log.Println("error while connecting to database: ", err)
-			ConnectDB(dataSourceName)
+			//ConnectDB(dataSourceName)
 		}
 	})
 	db = &MyDb{gdb}

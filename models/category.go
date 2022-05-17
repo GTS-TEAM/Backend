@@ -11,7 +11,7 @@ type Category struct {
 	Description string     `json:"description"`
 	Children    []Category `json:"children,omitempty" gorm:"foreignkey:ParentID"`
 	ParentID    *uuid.UUID `json:"parent_id,omitempty"`
-	Products    []*Product `json:"-" gorm:"many2many:products_categories"`
+	Products    []*Product `json:"-" gorm:"many2many:products_categories;constraint:OnDelete:CASCADE"`
 }
 
 func (c *Category) TableName() string {
