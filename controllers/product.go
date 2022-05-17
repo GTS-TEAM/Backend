@@ -128,8 +128,13 @@ func (p *ProductController) GetReviews(c *gin.Context) {
 
 func (p *ProductController) Delete(c *gin.Context) {
 	product := models.Product{}
-	id := c.Param("id")
-	err := product.Delete(id)
+	var ids []string
+
+	if err := c.ShouldBindJSON(&ids); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	err := product.Delete(ids)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

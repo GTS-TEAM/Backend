@@ -77,7 +77,7 @@ func main() {
 		api.GET("/product/:id", product.GetProductById)
 		api.POST("/product", product.Create)
 		api.PUT("/product/:id", product.Update)
-		api.DELETE("/product/:id", product.Delete)
+		api.DELETE("/product", product.Delete)
 
 		api.GET("/product/reviews/:id", product.GetReviews)
 		api.POST("/product/reviews", product.CreateReviews)

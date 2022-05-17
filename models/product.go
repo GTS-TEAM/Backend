@@ -54,6 +54,7 @@ type Product struct {
 	Rating       float64                  `json:"rating" gorm:"-:migration;->"`
 	Category     string                   `json:"category" gorm:"-:migration;->"`
 	Stock        int64                    `json:"stock" gorm:"-:migration;->"`
+	Reviews      []Review                 `json:"-" gorm:"constraint:OnDelete:CASCADE"`
 }
 
 type CreateProduct struct {
@@ -259,10 +260,17 @@ func (p *Product) Update(id string, dto *Product) (err error) {
 	return nil
 }
 
-func (p *Product) Delete(id string) (err error) {
-	err = db.Model(&Product{}).
+func (p *Product) Delete(ids []string) (err error) {
+	//p.ID = uuid.FromStringOrNil(ids[0])
+	var products []Product
+	for _, id := range ids {
+		product := Product{}
+		product.ID = uuid.FromStringOrNil(id)
+		products = append(products, product)
+	}
+	err = db.Debug().Model(&Product{}).
 		Select(clause.Associations).
-		Delete(&Product{BaseModel: BaseModel{ID: uuid.FromStringOrNil(id)}}).Error
+		Delete(&products).Error
 	if err != nil {
 		utils.LogError("Product Delete", err)
 		return
