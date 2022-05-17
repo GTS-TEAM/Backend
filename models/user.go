@@ -25,7 +25,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
 
 func (u *User) Login(dto dtos.LoginForm) (res map[string]interface{}, err error) {
 	user := User{}
-	if err := db.First(&user, "email = ?", dto.Email).Error; err == gorm.ErrRecordNotFound {
+	if err := db.First(&user, "email = ? and role = ?", dto.Email, dto.Role).Error; err == gorm.ErrRecordNotFound {
 		return nil, errors.New("Email not found")
 	}
 

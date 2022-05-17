@@ -4,6 +4,7 @@ services:
   next:
     image: next
     container_name: next
+    restart: always
     build:
       context: .
       dockerfile: ./Dockerfile
