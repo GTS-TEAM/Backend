@@ -18,7 +18,7 @@ func (auth *AuthController) Login(c *gin.Context) {
 
 	if validationErr := c.ShouldBindJSON(&loginForm); validationErr != nil {
 		utils.LogError("BindJSON AuthController", validationErr)
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
+		c.JSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
 		return
 	}
 
@@ -26,7 +26,7 @@ func (auth *AuthController) Login(c *gin.Context) {
 
 	res, err := user.Login(loginForm)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, dtos.Response{Message: err.Error()})
+		c.JSON(http.StatusNotFound, dtos.Response{Message: err.Error()})
 		return
 	}
 
@@ -37,7 +37,7 @@ func (auth *AuthController) Register(c *gin.Context) {
 	RegisterForm := dtos.RegisterForm{}
 
 	if validationErr := c.ShouldBindJSON(&RegisterForm); validationErr != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
+		c.JSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
 		return
 	}
 
@@ -45,7 +45,7 @@ func (auth *AuthController) Register(c *gin.Context) {
 
 	err := user.Register(RegisterForm)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, dtos.Response{Message: err.Error(), Data: nil})
+		c.JSON(http.StatusNotFound, dtos.Response{Message: err.Error(), Data: nil})
 		return
 	}
 
@@ -55,7 +55,7 @@ func (auth *AuthController) Register(c *gin.Context) {
 func (auth *AuthController) RefreshToken(c *gin.Context) {
 	RefreshTokenForm := dtos.RefreshTokenForm{}
 	if validationErr := c.ShouldBindJSON(&RefreshTokenForm); validationErr != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
+		c.JSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
 		return
 	}
 
@@ -63,7 +63,7 @@ func (auth *AuthController) RefreshToken(c *gin.Context) {
 
 	res, err := token.ValidateTokenRefreshToken(RefreshTokenForm.RefreshToken)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, dtos.Response{Message: err.Error(), Data: nil})
+		c.JSON(http.StatusNotFound, dtos.Response{Message: err.Error(), Data: nil})
 		return
 	}
 
@@ -77,7 +77,7 @@ func (auth *AuthController) Authorize(c *gin.Context) {
 
 	jwtClaims, err := t.VerifyToken(token)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -90,7 +90,7 @@ func (auth *AuthController) Authorize(c *gin.Context) {
 		c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: nil})
 		return
 	}
-
+	c.Writer.Header().Set("Content-Type", "application/json")
 	c.JSON(http.StatusForbidden, gin.H{
 		"error": "Forbidden",
 	})
