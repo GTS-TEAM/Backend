@@ -26,6 +26,7 @@ type ReviewStatistics struct {
 type ReviewResponse struct {
 	Reviews []Review           `json:"reviews"`
 	Stats   []ReviewStatistics `json:"stats"`
+	Count   int64              `json:"count"`
 }
 
 func (r *Review) Create(userId string) error {
@@ -37,29 +38,34 @@ func (r *Review) Create(userId string) error {
 	return nil
 }
 
-func (r *Review) GetReviewOfProduct(productId string, pagination Pagination) (res []ReviewResponse, err error) {
+func (r *Review) GetReviewOfProduct(productId string, pagination Pagination) (ReviewResponse, error) {
 	var reviews []Review
 	var statistic []ReviewStatistics
+	var count int64
 
-	if err = db.Preload("User").
+	if err := db.Debug().Model(&Review{}).Preload("User").
 		Where("product_id = ?", productId).
+		Count(&count).
 		Limit(pagination.Limit).
 		Offset(pagination.Page).
 		Order(pagination.Sort).
-		Find(&reviews).Error;
-		err != nil {
-		return nil, err
+		Find(&reviews).Error; err != nil {
+		return ReviewResponse{}, err
 	}
-	db.Model(&Review{}).Select("reviews.rating, COUNT(*) AS count").Group("rating").Where("product_id = ?", productId).Find(&statistic)
+
+	db.Model(&Review{}).
+		Select("reviews.rating, COUNT(*) AS count").
+		Group("rating").
+		Where("product_id = ?", productId).
+		Find(&statistic)
 	// calculate percentage of rating
 	for i := range statistic {
-		statistic[i].Percentage = int64(float64(statistic[i].Count) / float64(len(reviews)) * 100)
+		statistic[i].Percentage = int64(float64(statistic[i].Count) / float64(count) * 100)
 	}
-	return []ReviewResponse{
-		{
-			Reviews: reviews,
-			Stats:   statistic,
-		},
+	return ReviewResponse{
+		Reviews: reviews,
+		Stats:   statistic,
+		Count:   count,
 	}, nil
 }
 
