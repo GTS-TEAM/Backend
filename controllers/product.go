@@ -111,9 +111,10 @@ func (p *ProductController) CreateReviews(c *gin.Context) {
 
 func (p *ProductController) GetReviews(c *gin.Context) {
 	productId := c.Param("id")
+	pagination := models.GeneratePaginationFromRequest(c)
 	review := models.Review{}
 
-	reviews, err := review.GetReviewOfProduct(productId)
+	reviews, err := review.GetReviewOfProduct(productId, pagination)
 
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})

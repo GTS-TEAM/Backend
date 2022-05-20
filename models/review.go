@@ -37,11 +37,17 @@ func (r *Review) Create(userId string) error {
 	return nil
 }
 
-func (r *Review) GetReviewOfProduct(productId string) (res []ReviewResponse, err error) {
+func (r *Review) GetReviewOfProduct(productId string, pagination Pagination) (res []ReviewResponse, err error) {
 	var reviews []Review
 	var statistic []ReviewStatistics
 
-	if err = db.Preload("User").Where("product_id = ?", productId).Find(&reviews).Error; err != nil {
+	if err = db.Preload("User").
+		Where("product_id = ?", productId).
+		Limit(pagination.Limit).
+		Offset(pagination.Page).
+		Order(pagination.Sort).
+		Find(&reviews).Error;
+		err != nil {
 		return nil, err
 	}
 	db.Model(&Review{}).Select("reviews.rating, COUNT(*) AS count").Group("rating").Where("product_id = ?", productId).Find(&statistic)
