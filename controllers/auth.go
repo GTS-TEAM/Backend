@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"next/dtos"
 	"next/models"
+	"next/utils"
 )
 
 type AuthController struct {
@@ -15,6 +16,7 @@ func (auth *AuthController) Login(c *gin.Context) {
 	var loginForm dtos.LoginForm
 
 	if validationErr := c.ShouldBindJSON(&loginForm); validationErr != nil {
+		utils.LogError("BindJSON AuthController", validationErr)
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationErr})
 		return
 	}
@@ -81,6 +83,6 @@ func (auth *AuthController) Authorize(c *gin.Context) {
 	}
 
 	c.Header("x-user-id", jwtClaims.UserID.String())
-	c.Header("x-role", jwtClaims.Role)
+	c.Header("x-user-role", jwtClaims.Role)
 	c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: nil})
 }

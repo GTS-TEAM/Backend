@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-contrib/gzip"
-	static "github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"io"
@@ -48,7 +47,7 @@ func main() {
 
 	r := gin.Default()
 	r.RedirectTrailingSlash = true
-	r.Use(static.Serve("/", static.LocalFile("./public", true)))
+	//r.Use(static.Serve("/", static.LocalFile("./public", true)))
 	r.Use(middlewares.CORSMiddleware())
 	r.Use(middlewares.RequestIDMiddleware())
 	r.Use(gin.Logger())
@@ -56,7 +55,14 @@ func main() {
 	//r.Use(gin.Recovery())
 
 	models.Init()
-
+	r.GET("/something", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to the E-commerce API",
+			"version": "1.0.0",
+			"author":  "Titus Nguyen",
+			"header":  c.Request.RequestURI,
+		})
+	})
 	api := r.Group("/api")
 	{
 		auth := new(controllers.AuthController)
@@ -75,33 +81,32 @@ func main() {
 		product := new(controllers.ProductController)
 		api.GET("/product", product.GetProductsByCategory)
 		api.GET("/product/:id", product.GetProductById)
-		api.POST("/product", product.Create)
-		api.PUT("/product/:id", product.Update)
-		api.DELETE("/product", product.Delete)
+		api.POST("/product", middlewares.Authorization(), product.Create)
+		api.PUT("/product/:id", middlewares.Authorization(), product.Update)
+		api.DELETE("/product", middlewares.Authorization(), product.Delete)
 
 		api.GET("/product/reviews/:id", product.GetReviews)
-		api.POST("/product/reviews", product.CreateReviews)
+		api.POST("/product/reviews", middlewares.Authorization(), product.CreateReviews)
 
 		category := new(controllers.CategoryController)
 		api.GET("/category", category.GetAll)
 		api.GET("/category/count-products/:id", category.GetCountProductOfCategory)
 
-		api.POST("/category", category.Create)
+		api.POST("/category", middlewares.Authorization(), category.Create)
 		//categoryGroup.PUT("/:id", category.Update)
 		//categoryGroup.DELETE("/:id", category.Delete)
 
 		metadata := new(controllers.MetadataController)
 		api.GET("/metadata", metadata.GetAll)
-		api.POST("/metadata", metadata.Create)
-		api.PUT("/metadata/:id", metadata.Update)
+		api.POST("/metadata", middlewares.Authorization(), metadata.Create)
+		api.PUT("/metadata/:id", middlewares.Authorization(), metadata.Update)
 
 		variant := new(controllers.VariantController)
 		api.GET("/variant", variant.Get)
 		//api.POST("/variant", variant.Create)
 
 		stock := new(controllers.StockController)
-		//api.GET("/stock", (), stock.Get)
-		api.PATCH("/stock", stock.Update)
+		api.PATCH("/stock", middlewares.Authorization(), stock.Update)
 		api.GET("/stock", stock.Get)
 	}
 

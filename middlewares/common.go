@@ -14,11 +14,26 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
+func Authorization() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.GetHeader("x-user-id")
+		role := c.GetHeader("x-role")
+		if token == "" || role != "admin" {
+			c.JSON(401, gin.H{
+				"message": "Unauthorized",
+			})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, x-user-id, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, x-user-id, x-user-role, origin, Cache-Control, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
 
 		if c.Request.Method == "OPTIONS" {
