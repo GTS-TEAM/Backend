@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"next/dtos"
+	"next/middlewares"
 	"next/models"
 	"next/utils"
+	"strings"
 )
 
 type AuthController struct {
@@ -70,7 +71,7 @@ func (auth *AuthController) RefreshToken(c *gin.Context) {
 }
 
 func (auth *AuthController) Authorize(c *gin.Context) {
-	fmt.Println("Header: ", c.Request.Header)
+	path := c.Request.Header["Path"]
 	t := &models.Token{}
 	token := t.ExtractToken(c.Request)
 
@@ -84,5 +85,33 @@ func (auth *AuthController) Authorize(c *gin.Context) {
 
 	c.Header("x-user-id", jwtClaims.UserID.String())
 	c.Header("x-user-role", jwtClaims.Role)
-	c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: nil})
+
+	if CheckRole(path[0], jwtClaims.Role) {
+		c.JSON(http.StatusOK, dtos.Response{Message: "success", Data: nil})
+		return
+	}
+
+	c.JSON(http.StatusForbidden, gin.H{
+		"error": "Forbidden",
+	})
+}
+
+func CheckRole(path string, role string) bool {
+	switch role {
+	case "admin":
+		for _, value := range middlewares.GetSecurityRouters().Admin {
+			if strings.Contains(path, value) {
+				return true
+			}
+		}
+		break
+	case "user":
+		for _, value := range middlewares.GetSecurityRouters().User {
+			if strings.Contains(path, value) {
+				return true
+			}
+		}
+		break
+	}
+	return false
 }

@@ -52,7 +52,7 @@ func main() {
 	r.Use(middlewares.RequestIDMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	//r.Use(gin.Recovery())
+	r.Use(gin.Recovery())
 
 	models.Init()
 	r.GET("/something", func(c *gin.Context) {
@@ -81,32 +81,31 @@ func main() {
 		product := new(controllers.ProductController)
 		api.GET("/product", product.GetProductsByCategory)
 		api.GET("/product/:id", product.GetProductById)
-		api.POST("/product", middlewares.Authorization(), product.Create)
-		api.PUT("/product/:id", middlewares.Authorization(), product.Update)
-		api.DELETE("/product", middlewares.Authorization(), product.Delete)
+		api.POST("/product", product.Create)
+		api.PUT("/product/:id", product.Update)
+		api.DELETE("/product", product.Delete)
 
-		api.GET("/product/reviews/:id", product.GetReviews)
-		api.POST("/product/reviews", middlewares.Authorization(), product.CreateReviews)
+		api.GET("/reviews/:id", product.GetReviews)
+		api.POST("/reviews", product.CreateReviews)
 
 		category := new(controllers.CategoryController)
 		api.GET("/category", category.GetAll)
-		api.GET("/category/count-products/:id", category.GetCountProductOfCategory)
 
-		api.POST("/category", middlewares.Authorization(), category.Create)
+		api.POST("/category", category.Create)
 		//categoryGroup.PUT("/:id", category.Update)
 		//categoryGroup.DELETE("/:id", category.Delete)
 
 		metadata := new(controllers.MetadataController)
 		api.GET("/metadata", metadata.GetAll)
-		api.POST("/metadata", middlewares.Authorization(), metadata.Create)
-		api.PUT("/metadata/:id", middlewares.Authorization(), metadata.Update)
+		api.POST("/metadata", metadata.Create)
+		api.PUT("/metadata/:id", metadata.Update)
 
 		variant := new(controllers.VariantController)
 		api.GET("/variant", variant.Get)
 		//api.POST("/variant", variant.Create)
 
 		stock := new(controllers.StockController)
-		api.PATCH("/stock", middlewares.Authorization(), stock.Update)
+		api.PATCH("/stock", stock.Update)
 		api.GET("/stock", stock.Get)
 	}
 

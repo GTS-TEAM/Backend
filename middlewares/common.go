@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"next/models"
+	"next/utils"
 )
 
 func TokenAuthMiddleware() gin.HandlerFunc {
@@ -17,12 +18,14 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 func Authorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("x-user-id")
-		role := c.GetHeader("x-role")
+		role := c.GetHeader("x-user-role")
+		utils.LogInfo("x-user-id", token)
+		utils.LogInfo("x-user-role", role)
+
 		if token == "" || role != "admin" {
 			c.JSON(401, gin.H{
 				"message": "Unauthorized",
 			})
-			c.Abort()
 			return
 		}
 		c.Next()

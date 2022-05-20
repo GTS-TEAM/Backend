@@ -75,3 +75,7 @@ func ConnectDB(dataSourceName string) error {
 	db = &MyDb{gdb}
 	return nil
 }
+
+func GetDB() *MyDb {
+	return db
+}
