@@ -2,7 +2,6 @@ package models
 
 import (
 	uuid "github.com/satori/go.uuid"
-	"next/utils"
 )
 
 type Category struct {
@@ -43,10 +42,20 @@ func (c *Category) Create() error {
 	return db.Debug().Create(&c).Error
 }
 
-func (c *Category) GetCountProductOfCategory(id string) (count int64, err error) {
-	err = db.Table("products_categories").Where("category_id = ?", id).Count(&count).Error
-	if err != nil {
-		utils.LogError("GetCountProductOfCategory", err)
+func (c *Category) GetChildrenIds() []uuid.UUID {
+	
+	var children []Category
+	var ids []uuid.UUID
+
+	if err := db.
+		Where("parent_id = ?", c.ID).
+		Find(&children).Error; err != nil {
+		return ids
 	}
-	return
+
+	for _, child := range children {
+		ids = append(ids, child.ID)
+	}
+
+	return ids
 }

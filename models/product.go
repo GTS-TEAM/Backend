@@ -142,8 +142,8 @@ func (p *Product) Create(userId string, dto *CreateProduct) error {
 }
 
 func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagination) (data ProductsResponse, err error) {
-
-	queryBuilder := db.Debug().Model(&Product{}).
+	cate := Category{}
+	queryBuilder := db.Model(&Product{}).
 		Select("products.*,User,categories.name as category,avg(reviews.rating) as rating").
 		Group("products.id,\"User\".\"id\",categories.name").
 		Joins("User").
@@ -152,7 +152,13 @@ func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagi
 		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id")
 
 	if category != "" {
-		queryBuilder = queryBuilder.Where("categories.id = ?", category)
+		db.Preload("Children").First(&cate, "id = ?", category)
+
+		if len(cate.Children) > 0 {
+			queryBuilder = queryBuilder.Where("categories.id IN (?)", cate.GetChildrenIds())
+		} else {
+			queryBuilder = queryBuilder.Where("categories.id = ?", category)
+		}
 	}
 
 	if filter.MinPrice != 0 {

@@ -52,21 +52,3 @@ func (ca CategoryController) GetAll(c *gin.Context) {
 		Data:    categories,
 	})
 }
-
-func (ca CategoryController) GetCountProductOfCategory(c *gin.Context) {
-
-	category := models.Category{}
-	id := c.Param("id")
-	count, err := category.GetCountProductOfCategory(id)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(200, dtos.Response{
-		Message: "success",
-		Data:    count,
-	})
-}
