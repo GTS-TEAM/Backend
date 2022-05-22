@@ -144,9 +144,9 @@ func (p *Product) Create(userId string, dto *CreateProduct) error {
 func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagination) (data ProductsResponse, err error) {
 	cate := Category{}
 	queryBuilder := db.Model(&Product{}).
-		Select("products.*,User,categories.name as category,avg(reviews.rating) as rating").
-		Group("products.id,\"User\".\"id\",categories.name").
-		Joins("User").
+		Select("products.*,Customer,categories.name as category,avg(reviews.rating) as rating").
+		Group("products.id,\"Customer\".\"id\",categories.name").
+		Joins("Customer").
 		Joins("LEFT JOIN reviews ON products.id = reviews.product_id").
 		Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
 		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id")
@@ -198,9 +198,9 @@ func (p *Product) GetByID(id string) (data Product, err error) {
 	fmt.Println("ID: ", id)
 
 	err = db.Debug().Model(&Product{}).
-		Select("products.*,User,categories.name as category,avg(reviews.rating) as rating").
-		Group("products.id,\"User\".\"id\",categories.name").
-		Joins("User").
+		Select("products.*,Customer,categories.name as category,avg(reviews.rating) as rating").
+		Group("products.id,\"Customer\".\"id\",categories.name").
+		Joins("Customer").
 		Joins("LEFT JOIN reviews ON products.id = reviews.product_id").
 		Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
 		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id").

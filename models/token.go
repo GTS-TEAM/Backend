@@ -80,7 +80,7 @@ func (t *Token) TokenValid(c *gin.Context) {
 	}
 
 	if err != nil {
-		//Token does not exists in Redis (User logged out or expired)
+		//Token does not exists in Redis (Customer logged out or expired)
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}

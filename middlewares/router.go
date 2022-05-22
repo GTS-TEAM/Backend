@@ -12,6 +12,7 @@ func GetSecurityRouters() SecurityRouter {
 			"/api/category",
 			"/api/reviews",
 			"/api/metadata",
+			"/api/stock",
 		},
 		User: []string{},
 	}

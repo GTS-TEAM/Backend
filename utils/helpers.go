@@ -31,3 +31,11 @@ func GetProductFilter(c *gin.Context) (filter dtos.ProductFilter) {
 	filter.MinRating, _ = strconv.ParseFloat(c.Query("min_rating"), 32)
 	return
 }
+
+func GetCustomersFilter(c *gin.Context) (filter dtos.CustomerFilter) {
+	filter.Name = c.Query("name")
+	filter.Email = c.Query("email")
+	filter.Phone = c.Query("phone")
+	filter.Status = c.Query("status")
+	return
+}

@@ -69,7 +69,8 @@ func main() {
 		api.POST("/auth/refresh-token", auth.RefreshToken)
 
 		user := new(controllers.UserController)
-		api.GET("/user", user.Get)
+		api.GET("/customer", user.GetCustomers)
+		api.PATCH("/customer", user.ChangeCustomerStatus)
 		//userGroup.GET("/", user.GetProductsByCategory)
 		//userGroup.GET("/:id", user.Gets)
 		//userGroup.POST("/", user.Create)
