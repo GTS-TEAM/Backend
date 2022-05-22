@@ -4,7 +4,6 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"io"
 	"log"
 	"next/controllers"
 	"next/middlewares"
@@ -22,9 +21,9 @@ func main() {
 			log.Fatal("error: failed to load the env file")
 		}
 	}
-	os.Mkdir("logs", 0777)
-	logFile, _ := os.Create("logs/server.log")
-	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
+	//os.Mkdir("logs", 0777)
+	//logFile, _ := os.Create("logs/server.log")
+	//gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
 
 	//server := socketio.NewServer(nil)
 	//
@@ -50,9 +49,7 @@ func main() {
 	//r.Use(static.Serve("/", static.LocalFile("./public", true)))
 	r.Use(middlewares.CORSMiddleware())
 	r.Use(middlewares.RequestIDMiddleware())
-	r.Use(gin.Logger())
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	r.Use(gin.Recovery())
 
 	models.Init()
 	r.GET("/something", func(c *gin.Context) {
