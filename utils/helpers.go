@@ -29,6 +29,7 @@ func GetProductFilter(c *gin.Context) (filter dtos.ProductFilter) {
 	filter.MaxPrice, _ = strconv.ParseFloat(c.Query("max_price"), 32)
 	filter.MinPrice, _ = strconv.ParseFloat(c.Query("min_price"), 32)
 	filter.MinRating, _ = strconv.ParseFloat(c.Query("min_rating"), 32)
+	filter.Name = c.Query("name")
 	return
 }
 

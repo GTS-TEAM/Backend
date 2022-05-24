@@ -20,6 +20,7 @@ type ProductFilter struct {
 	MinPrice  float64         `json:"min_price"`
 	MaxPrice  float64         `json:"max_price"`
 	MinRating float64         `json:"min_rating"`
+	Name      string          `json:"name"`
 }
 
 type CustomerFilter struct {

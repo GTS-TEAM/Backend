@@ -173,6 +173,10 @@ func (p *Product) GetAll(category string, filter dtos.ProductFilter, paging Pagi
 		queryBuilder = queryBuilder.Having("avg(reviews.rating) > ?", filter.MinRating)
 	}
 
+	if filter.Name != "" {
+		queryBuilder = queryBuilder.Where("products.name ILIKE ?", "%"+filter.Name+"%")
+	}
+
 	//if len(filter.Variants) > 0 {
 	//	query := ""
 	//	for _, variant := range filter.Variants {
