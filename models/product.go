@@ -202,9 +202,8 @@ func (p *Product) GetByID(id string) (data Product, err error) {
 	fmt.Println("ID: ", id)
 
 	err = db.Debug().Model(&Product{}).
-		Select("products.*,Customer,categories.name as category,avg(reviews.rating) as rating").
-		Group("products.id,\"Customer\".\"id\",categories.name").
-		Joins("Customer").
+		Select("products.*,categories.name as category,avg(reviews.rating) as rating").
+		Group("products.id,categories.name").
 		Joins("LEFT JOIN reviews ON products.id = reviews.product_id").
 		Joins("LEFT JOIN products_categories ON products_categories.product_id = products.id").
 		Joins("LEFT JOIN categories ON categories.id = products_categories.category_id").
