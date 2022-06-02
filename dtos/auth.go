@@ -3,7 +3,7 @@ package dtos
 type LoginForm struct {
 	Email    string `form:"email" json:"email" binding:"required,email"`
 	Password string `form:"password" json:"password" binding:"required,min=3,max=50"`
-	Role     string `form:"role" json:"role" binding:"required,oneof=admin user"`
+	Role     string `form:"role" json:"role" binding:"required,oneof=admin customer"`
 }
 
 type LoginResponse struct {
