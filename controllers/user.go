@@ -9,18 +9,18 @@ import (
 )
 
 /* Utils functions */
-func GetQueryChangeStatus(c *gin.Context) error {
+func GetQueryChangeStatus(c *gin.Context) (dtos.ChangeStatusRequest, error) {
 	var dto dtos.ChangeStatusRequest
 	dto.CustomerID = c.Query("customer_id")
 	dto.Status = c.Query("status")
 	if dto.CustomerID == "" || dto.Status == "" {
-		return errors.New("Invalid params")
+		return dto, errors.New("Missing parameters")
 	}
 	if !checkValidStatus(dto.Status) {
-		return errors.New("Invalid status")
+		return dto, errors.New("Invalid status")
 	}
 
-	return nil
+	return dto, nil
 }
 
 func checkValidStatus(status string) bool {
@@ -57,8 +57,7 @@ func (u *UserController) GetCustomers(c *gin.Context) {
 }
 
 func (u *UserController) ChangeCustomerStatus(c *gin.Context) {
-	err := GetQueryChangeStatus(c)
-	request := dtos.ChangeStatusRequest{}
+	request, err := GetQueryChangeStatus(c)
 	user := models.User{}
 	if err != nil {
 		c.JSON(406, gin.H{"error": err.Error()})
