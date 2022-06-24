@@ -15,7 +15,7 @@ type User struct {
 	Password string    `json:"-"`
 	Role     string    `json:"role"`
 	Products []Product `json:"products,omitempty"`
-	Phone    string    `json:"phone" gorm:"unique;null"`
+	Phone    string    `json:"phone" gorm:"null"`
 	Status   string    `json:"status" gorm:"default:'active'"`
 }
 
